@@ -1,0 +1,19 @@
+{
+  "name": "markdown_polymer",
+  "version": "0.0.0",
+  "authors": [
+    "Joshua Caron <jocaron@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.5"
+  }
+}

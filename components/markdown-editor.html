@@ -1,0 +1,43 @@
+<polymer-element name="markdown-editor" layout vertical attributes="markdown">
+  <!-- outermost template defines the element's shadow DOM -->
+  <template>
+    <style>
+  #markdown {
+    outline:none;
+    border:none;
+    border-right:solid 1px black;
+    resize:none;
+    padding:15px;
+    font-family:"Open Sans";
+    font-size:16px;  }
+
+  #preview {
+    padding:0 15px 15px;
+    font-family:"Open Sans";
+    margin:0;
+  }
+
+  #wrapper {
+    height:100%;
+    width:100%;
+  }
+  </style>
+  <div id="wrapper" layout horizontal flex>
+    <textarea id="markdown" value="{{markdown}}" flex></textarea>
+    <div id="preview" flex>
+      <p>Type in <i>Markdown</i> and see the result instantly.</p>
+    </div>
+    </div>
+  </template>
+  <script>
+    Polymer('markdown-editor', {
+      markdown:"Type in *Markdown* and see the result instantly.",
+      markdownChanged:function(x,y){
+        this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+        // this.fire('markdown-updated',{
+        //   "markdown":this.markdown
+        // })
+      }
+    });
+  </script>
+</polymer-element>
