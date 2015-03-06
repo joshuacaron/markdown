@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', function(){
   app.pages = [];
   newPage();
 
+  app.makeTitle = function(x){
+    y = x.split("\n");
+    return y[0];
+  }
+
   var cw = document.getElementById("closeWindow");;
   cw.addEventListener("click",function(){
     // chrome.app.window.current().close;
@@ -56,10 +61,10 @@ document.addEventListener('DOMContentLoaded', function(){
             console.log('ctrl-s');
             saveAs();
             break;
-        // case 'f':
-        //     event.preventDefault();
-        //     console.log('ctrl-f');
-        //     break;
+        case 'n':
+            event.preventDefault();
+            newPage();
+            break;
         // case 'g':
         //     event.preventDefault();
         //     console.log('ctrl-g');
