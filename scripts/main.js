@@ -11,7 +11,14 @@ newPage = function(){
 	}
 }
 
-var app = document.querySelector("#auto-bind");
-app.selected=0;
-app.pages = []
-newPage();
+document.addEventListener('DOMContentLoaded', function(){
+	app = document.querySelector("#auto-bind");
+	app.selected=0;
+	app.pages = [];
+	newPage();
+
+    var elem = document.getElementById('fab');
+    elem.addEventListener('click',function(){
+    	newPage();
+    });
+});

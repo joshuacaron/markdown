@@ -6,9 +6,13 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
-<link rel="import" href="bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="bower_components/paper-fab/paper-fab.html">	
 <link rel="import" href="components/markdown-editor.html">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400' rel='stylesheet' type='text/css'>
+<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400' rel='stylesheet' type='text/css'> -->
+
+
+<script src="scripts/main.js"></script>
+<script src="scripts/markdown.min.js"></script>
 </head>
 
 
@@ -26,10 +30,7 @@
 		</section>
 		</template>
 	</core-animated-pages>
-	<paper-fab icon="add" onClick="newPage()"></paper-fab>
 </template>
-
-<script src="scripts/main.js"></script>
-<script src="scripts/markdown.min.js"></script>
+<paper-fab icon="add" id="fab"></paper-fab>
 </body>
 </html>
