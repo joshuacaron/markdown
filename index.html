@@ -8,7 +8,7 @@
 <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="bower_components/paper-fab/paper-fab.html">	
 <link rel="import" href="components/markdown-editor.html">
-<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400' rel='stylesheet' type='text/css'> -->
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 
 
 <script src="scripts/main.js"></script>
@@ -19,6 +19,10 @@
 
 
 <body layout vertical fullbleed>
+<div layout horizontal id="taskbar">
+<div id="drag" flex></div>
+<paper-icon-button icon="clear" id="closeWindow" role="button"></paper-icon-button>
+</div>
 <template is="auto-binding" id="auto-bind">
 	<paper-tabs selected="{{selected}}">
 		<template repeat="{{page in pages}}">

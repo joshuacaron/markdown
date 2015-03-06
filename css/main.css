@@ -1,5 +1,6 @@
 body{
 	font-family:"Open Sans";
+	color:#212121;
 }
 
 core-toolbar, paper-tabs{
@@ -8,13 +9,21 @@ core-toolbar, paper-tabs{
 	color:white;
 }
 
-paper-tabs {
+/*paper-tabs {
 	-webkit-app-region:drag;
+}*/
+
+#drag {
+	-webkit-app-region:drag;
+}
+
+#taskbar {
+	background-color:#0288D1;
 }
 
 paper-tab {
 	max-width:150px;
-	-webkit-app-region:no-drag;
+	/*-webkit-app-region:no-drag;*/
 }
 
 paper-tabs::shadow #selectionBar {

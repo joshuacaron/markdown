@@ -694,7 +694,7 @@ html /deep/ .paper-shadow-bottom-z-5 {
 
 	
 
-<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400' rel='stylesheet' type='text/css'> -->
+
 
 
 <script src="scripts/main.js"></script>
@@ -1648,17 +1648,22 @@ polyfill-next-selector { content: ':host > *:not(.core-selected):not([animate])'
   #markdown {
     outline:none;
     border:none;
-    border-right:solid 1px black;
+    border-right:solid 1px #e0e0e0;
     resize:none;
     padding:15px;
     font-family:"Open Sans";
-    font-size:16px;  }
+    font-size:16px;
+    color:#212121;
+  }
 
   #preview {
     padding:0 15px 15px;
     font-family:"Open Sans";
     margin:0;
     font-size:16px;
+    color:#212121;
+    /*background-color:black;*/
+    /*color:white;*/
   }
 
   #wrapper {
@@ -1669,12 +1674,16 @@ polyfill-next-selector { content: ':host > *:not(.core-selected):not([animate])'
   <div id="wrapper" layout="" horizontal="" flex="">
     <textarea id="markdown" value="{{markdown}}" flex=""></textarea>
     <div id="preview" flex="">
-      <p>Type in <i>Markdown</i> and see the result instantly.</p>
+      <p>Type in <i>Markdown</i> and see the result <b>instantly</b>.</p>
     </div>
     </div>
   </template>
   
 </polymer-element></div>
+<div layout="" horizontal="" id="taskbar">
+<div id="drag" flex=""></div>
+<paper-icon-button icon="clear" id="closeWindow" role="button"></paper-icon-button>
+</div>
 <template is="auto-binding" id="auto-bind">
 	<paper-tabs selected="{{selected}}">
 		<template repeat="{{page in pages}}">
