@@ -8,8 +8,13 @@ core-toolbar, paper-tabs{
 	color:white;
 }
 
+paper-tabs {
+	-webkit-app-region:drag;
+}
+
 paper-tab {
 	max-width:150px;
+	-webkit-app-region:no-drag;
 }
 
 paper-tabs::shadow #selectionBar {
