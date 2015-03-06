@@ -1,0 +1,37 @@
+<html><head></head><body><polymer-element name="markdown-editor" layout="" vertical="" attributes="markdown">
+  <!-- outermost template defines the element's shadow DOM -->
+  <template>
+    <style>
+  #markdown {
+    outline:none;
+    border:none;
+    border-right:solid 1px #e0e0e0;
+    resize:none;
+    padding:15px;
+    font-family:"Open Sans";
+    font-size:16px;
+    color:#212121;
+  }
+
+  #preview {
+    padding:0 15px 15px;
+    font-family:"Open Sans";
+    margin:0;
+    font-size:16px;
+    color:#212121;
+    /*background-color:black;*/
+    /*color:white;*/
+  }
+
+  #wrapper {
+    height:100%;
+    width:100%;
+  }
+  </style>
+  <div id="wrapper" layout="" horizontal="" flex="">
+    <textarea id="markdown" value="{{markdown}}" flex=""></textarea>
+    <preview-pane flex markdown="{{markdown}}"></preview-pane>
+    </div>
+  </template>
+  <script src="markdown-editor.html.0.js"></script>
+</polymer-element></body></html>

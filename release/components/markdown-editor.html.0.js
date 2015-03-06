@@ -1,0 +1,4 @@
+
+    Polymer('markdown-editor', {
+      markdown:"",
+    });

@@ -11,19 +11,6 @@ newPage = function(){
   }
 }
 
-closeTab = function(){
-  if (app.pages.length>1 && app.selected==app.pages.length-1){
-    app.pages.splice(app.selected,1);
-    app.selected=app.pages.length-1;
-  }
-  else if (app.pages.length>1){
-    app.pages.splice(app.selected,1);
-  }
-  else {
-    window.close();
-  }
-}
-
 saveAs = function(){
   chrome.fileSystem.chooseEntry({type:"saveFile", suggestedName:"testing.txt"}, function(entry, array){
         save(entry, blob); /*the blob was provided earlier*/
@@ -78,10 +65,10 @@ document.addEventListener('DOMContentLoaded', function(){
             event.preventDefault();
             newPage();
             break;
-        case 'w':
-            event.preventDefault();
-            closeTab();
-            break;
+        // case 'g':
+        //     event.preventDefault();
+        //     console.log('ctrl-g');
+        //     break;
         }
     }
 });
