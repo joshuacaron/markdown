@@ -1,4 +1,4 @@
 
     Polymer('markdown-editor', {
-      markdown:"",
+      markdown:""
     });

@@ -43,6 +43,22 @@ closeTab = function(){
   }
 }
 
+printFile = function(){
+  console.log("printing");
+  var iframe = document.createElement("iframe");
+  var doc = markdown.toHTML(app.pages[app.selected].markdown);
+  iframe.srcdoc = doc;
+  iframe.width = iframe.height = 1;
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+  setTimeout(function() {
+    iframe.contentWindow.print();
+    setTimeout(function() {
+      iframe.remove();
+    });
+  });
+}
+
 errorHandler = function(e){
   console.log(e);
 }
@@ -170,6 +186,10 @@ document.addEventListener('DOMContentLoaded', function(){
             event.preventDefault();
             console.log('ctrl-s');
             saveFile();
+            break;
+        case 'p':
+            event.preventDefault();
+            printFile();
             break;
         case 'n':
             event.preventDefault();

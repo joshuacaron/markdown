@@ -2,7 +2,7 @@
   "name": "Markdown",
   "description": "A beautiful, efficient markdown editor made with Material Design.",
   "manifest_version": 2,
-  "version": "0.0.1",
+  "version": "0.0.3",
   "minimum_chrome_version": "38",
   "permissions":[
     "https://fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2",
