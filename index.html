@@ -27,7 +27,7 @@
 <template is="auto-binding" id="auto-bind">
 	<paper-tabs selected="{{selected}}">
 		<template repeat="{{page in pages}}">
-			<paper-tab>{{makeTitle(page.markdown)}}</paper-tab>
+			<paper-tab>{{makeTitle(page.markdown,page.file,page.lastSave,page)}}</paper-tab>
 		</template>
 	</paper-tabs>
 	<core-animated-pages flex transitions="cross-fade" selected="{{selected}}">

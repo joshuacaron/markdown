@@ -1,7 +1,26 @@
 newPage = function(){
   app.pages.push({
-    "title":"untitled",
-    "markdown":"Type in *Markdown* and see the result **instantly**."
+    "markdown":"Markdown Overview\n\
+=================\n\
+\n\
+Welcome to **Markdown**. Everything you write is displayed formatted in the right pane. *Click* on the right pane to copy the formatted text as HTML.\n\
+\n\
+Options\n\
+-----------\n\
+- You can format text as *italics* or **bold**.\n\
+- List can be made with numbers or bullets.\n\
+- [Links](http://www.google.ca) can also be added.\n\
+\n\
+There are a number of useful keyboard shortcuts too:\n\
+\n\
+1. *Ctrl+n/Ctrl+t*: Create a new tab.\n\
+1. *Ctrl+o*: Open a file.\n\
+1. *Ctrl+s/Ctrl+Shift+s*: Save/save as a file.\n\
+1. *Ctrl+w*: Close the current tab.\n\
+1. *Ctrl+Tab*: Cycle through the tabs.\n\
+\n\
+Happy Writing!",
+    "path":""
   })
   if (app.pages.length>1){
     app.selected = app.pages.length -1;
@@ -24,24 +43,83 @@ closeTab = function(){
   }
 }
 
-saveAs = function(){
-  chrome.fileSystem.chooseEntry({type:"saveFile", suggestedName:"testing.txt"}, function(entry, array){
-        save(entry, blob); /*the blob was provided earlier*/
-    });
+errorHandler = function(e){
+  console.log(e);
+}
 
-  function save(fileEntry, content) {
-    fileEntry.createWriter(function(fileWriter) {
-      fileWriter.onwriteend = function(e) {
-        fileWriter.onwriteend = null;
-        fileWriter.truncate(content.size);
-      };
-      fileWriter.onerror = function(e) {
-        console.log('Write failed: ' + e.toString());
-      };
-      var blob = new Blob(['yoloswag'], {'type': 'text/plain'});
-      fileWriter.write(blob);
+cycleTabs = function(){
+  if (app.pages.length-app.selected>1){
+    app.selected += 1;
+  }
+  else if (app.pages.length-app.selected==1 && app.pages.length>1){
+    app.selected = 0;
+  }
+}
+
+saveAs = function(){
+  console.log("saving as");
+    chrome.fileSystem.chooseEntry({type: 'saveFile'}, function(writableFileEntry) {
+      app.pages[app.selected].file = writableFileEntry;
+    writableFileEntry.createWriter(function(writer) {
+      console.log("started writing");
+      writer.onerror = errorHandler;
+      writer.onwriteend = function(e) {
+        if (writer.length === 0) {
+            //fileWriter has been reset, write file
+            writer.write(new Blob([app.pages[app.selected].markdown], {type: 'text/plain'}));
+            app.pages[app.selected].lastSave = app.pages[app.selected].markdown;
+            // console.log(app.pages[app.selected]);
+        } else {
+            //file has been overwritten with blob
+            //use callback or resolve promise
+        }
+    };
+    writer.truncate(0);
+    }, errorHandler);
+  });
+}
+
+saveFile = function(){
+  if(app.pages[app.selected].file) {
+    writableFileEntry = app.pages[app.selected].file;
+    writableFileEntry.createWriter(function(writer) {
+      writer.onerror = errorHandler;
+    writer.onwriteend = function() {
+        if (writer.length === 0) {
+            //fileWriter has been reset, write file
+            writer.write(new Blob([app.pages[app.selected].markdown], {type: 'text/plain'}));
+            app.pages[app.selected].lastSave = app.pages[app.selected].markdown;
+            // console.log(app.pages[app.selected]);
+        } else {
+            //file has been overwritten with blob
+            //use callback or resolve promise
+        }
+    };
+    writer.truncate(0);
     }, errorHandler);
   }
+  else {
+    saveAs();
+  }
+}
+
+openFile = function(){
+  var chosenFileEntry = null;
+  chrome.fileSystem.chooseEntry({type: 'openWritableFile'}, function(readOnlyEntry) {
+    readOnlyEntry.file(function(file) {
+      var reader = new FileReader();
+
+      reader.onerror = errorHandler;
+      reader.onloadend = function(e) {
+        // console.log(e.target.result);
+        app.pages.push({"markdown": e.target.result, "lastSave":e.target.result});
+        app.selected = app.pages.length - 1;
+        app.pages[app.selected].file = readOnlyEntry;
+      };
+
+      reader.readAsText(file);
+    });
+	});
 }
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -50,9 +128,21 @@ document.addEventListener('DOMContentLoaded', function(){
   app.pages = [];
   newPage();
 
-  app.makeTitle = function(x){
-    y = x.split("\n");
-    return y[0];
+  app.makeTitle = function(markdown,file,lastSave,page){
+    path = "";
+    if(page.file){
+      path=page.file.name;
+    }
+
+    if(path!="" && page.lastSave==page.markdown){
+      return path;
+    }
+    else if(path!=""){
+      return path + "*";
+    }
+    else{
+      return "untitled*";
+    }
   }
 
   var cw = document.getElementById("closeWindow");;
@@ -68,16 +158,31 @@ document.addEventListener('DOMContentLoaded', function(){
 
     $(window).bind('keydown', function(event) {
     if (event.ctrlKey || event.metaKey) {
+      if (event.shiftKey && String.fromCharCode(event.which).toLowerCase() =='s'){
+        saveAs();
+      }
+      if (event.which==9){// Ctrl + Tab
+        event.preventDefault();
+        cycleTabs();
+      }
         switch (String.fromCharCode(event.which).toLowerCase()) {
         case 's':
             event.preventDefault();
             console.log('ctrl-s');
-            saveAs();
+            saveFile();
             break;
         case 'n':
             event.preventDefault();
             newPage();
             break;
+        case 'o':
+            event.preventDefault();
+            openFile();
+            break;
+        case 't':
+          event.preventDefault();
+          newPage();
+          break;
         case 'w':
             event.preventDefault();
             closeTab();
