@@ -33,6 +33,7 @@
         copyFrom.select();
         document.execCommand('copy');
         copyFrom.remove();
+        document.querySelector("#toast").show();
       },
       markdownChanged:function(x,y){
         this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
