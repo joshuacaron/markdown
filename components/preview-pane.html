@@ -17,5 +17,26 @@
     <div id="preview" flex=""></div>
     <!--<textarea hidden id="copy" value="{{convert(markdown)}}"></textarea>-->
   </template>
-  <script src="preview-pane.js"></script>
+  <script>
+      Polymer('preview-pane', {
+      eventDelegates: {
+        click: "onClick"
+      },
+      markdown:"",
+      convert:function(x){
+        markdown.toHTML(x);
+      },
+      onClick: function(){
+        var copyFrom = $('<textarea/>');
+        copyFrom.text(markdown.toHTML(this.markdown));
+        $('body').append(copyFrom);
+        copyFrom.select();
+        document.execCommand('copy');
+        copyFrom.remove();
+      },
+      markdownChanged:function(x,y){
+        this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+      }
+    });
+</script>
 </polymer-element></body></html>

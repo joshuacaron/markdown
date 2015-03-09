@@ -16,6 +16,7 @@ There are a number of useful keyboard shortcuts too:\n\
 1. *Ctrl+n/Ctrl+t*: Create a new tab.\n\
 1. *Ctrl+o*: Open a file.\n\
 1. *Ctrl+s/Ctrl+Shift+s*: Save/save as a file.\n\
+1. *Ctrl+p*: Print the current tab.\n\
 1. *Ctrl+w*: Close the current tab.\n\
 1. *Ctrl+Tab*: Cycle through the tabs.\n\
 \n\

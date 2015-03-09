@@ -1,0 +1,1 @@
+chrome.app.runtime.onLaunched.addListener(function(){chrome.app.window.create("index.html",{bounds:{width:1e3,height:650},frame:{type:"none"}})});
