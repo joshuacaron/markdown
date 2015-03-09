@@ -21,7 +21,7 @@ core-toolbar, paper-tabs{
 	background-color:#0288D1;
 }
 
-paper-tab {
+html-tab, paper-tab {
 	max-width:150px;
 	/*-webkit-app-region:no-drag;*/
 }
@@ -29,7 +29,7 @@ paper-tab {
 paper-tabs::shadow #selectionBar {
   background-color: #F50057;
 }
-paper-tab::shadow #ink {
+html-tab::shadow #ink, paper-tab::shadow #ink {
   color: #80D8FF;
 }
 

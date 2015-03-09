@@ -1,0 +1,69 @@
+<!--polymer-element name="html-tab" attributes="htmltitle" extends="paper-tab">
+  <template>
+    <shadow></shadow>
+  </template>
+
+  <script>
+    Polymer('html-tab', {
+      htmltitle:"",
+      htmltitleChanged:function(x,y){
+        this.injectBoundHTML(this.htmltitle,this.$.shadow);
+      }
+    });
+  </script>
+</polymer-element-->
+
+
+
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+
+<polymer-element name="html-tab" attributes="noink htmltitle" role="tab" inline flex center-center horizontal layout>
+<template>
+
+  <link rel="stylesheet" href="../bower_components/paper-tabs/paper-tab.css">
+  
+  <div class="tab-content" flex auto center-center horizontal layout><content id="tab"></content></div>
+  <paper-ripple id="ink" initialOpacity="0.95" opacityDecayVelocity="0.98"></paper-ripple>
+  
+</template>
+<script>
+
+  Polymer('html-tab', {
+    
+    /**
+     * If true, ink ripple effect is disabled.
+     *
+     * @attribute noink
+     * @type boolean
+     * @default false
+     */
+    htmltitle:"",
+    htmltitleChanged:function(x,y){
+      this.injectBoundHTML(this.htmltitle,this.$.tab);
+    },
+    noink: false,
+    
+    eventDelegates: {
+      down: 'downAction',
+      up: 'upAction'
+    },
+
+    downAction: function(e) {
+      if (this.noink || (this.parentElement && this.parentElement.noink)) {
+        return;
+      }
+      this.$.ink.downAction(e);
+    },
+
+    upAction: function() {
+      this.$.ink.upAction();
+    },
+    
+    cancelRipple: function() {
+      this.$.ink.upAction();
+    }
+    
+  });
+  
+</script>
+</polymer-element>

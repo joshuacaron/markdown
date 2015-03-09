@@ -155,10 +155,10 @@ document.addEventListener('DOMContentLoaded', function(){
       return path;
     }
     else if(path!=""){
-      return path + "*";
+      return "<em>" + path + "*</em>";
     }
     else{
-      return "untitled*";
+      return "<em>untitled*</em>";
     }
   }
 
