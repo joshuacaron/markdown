@@ -10,6 +10,7 @@
 <link rel="import" href="components/markdown-editor.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="components/preview-pane.html">
+<link rel="import" href="components/html-tab.html">
 
 
 <script src="scripts/main.js"></script>
@@ -26,8 +27,8 @@
 </div>
 <template is="auto-binding" id="auto-bind">
 	<paper-tabs selected="{{selected}}">
-		<template repeat="{{page in pages}}">
-			<paper-tab>{{makeTitle(page.markdown,page.file,page.lastSave,page)}}</paper-tab>
+		<template repeat="{{page in pages}}"> 
+			<html-tab htmltitle="{{makeTitle(page.markdown,page.file,page.lastSave,page)}}"></html-tab>
 		</template>
 	</paper-tabs>
 	<core-animated-pages flex transitions="cross-fade" selected="{{selected}}">

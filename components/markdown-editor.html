@@ -1,4 +1,4 @@
-<html><head></head><body><polymer-element name="markdown-editor" layout="" vertical="" attributes="markdown">
+<polymer-element name="markdown-editor" layout="" vertical="" attributes="markdown">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
@@ -18,8 +18,8 @@
     width:100%;
   }
   </style>
-  <div id="wrapper" layout="" horizontal="" flex="">
-    <textarea id="markdown" value="{{markdown}}" flex=""></textarea>
+  <div id="wrapper" layout horizontal flex>
+    <textarea id="markdown" value="{{markdown}}" flex></textarea>
     <preview-pane flex markdown="{{markdown}}"></preview-pane>
     </div>
   </template>
@@ -28,4 +28,4 @@
       markdown:""
     });
 </script>
-</polymer-element></body></html>
+</polymer-element>
