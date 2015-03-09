@@ -1,7 +1,7 @@
+release/
 bower_components/
 .gitignore
 image_src/
 gulpfile.js
 markdown.sublime-project
 node_modules/
-release/
