@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown focus">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
@@ -30,30 +30,35 @@
   }
   </style>
   <div id="wrapper" layout horizontal flex>
-    <textarea id="markdown" value="{{markdown}}" flex></textarea>
+    <textarea id="markdown" value="{{markdown}}" autofocus flex></textarea>
     <div id="preview" flex></div>
     </div>
   </template>
   <script>
       Polymer('markdown-editor', {
       markdown:"",
+      eventDelegates:{
+        focus:"onFocus"
+      },
+      onFocus:function(){
+        editor = this;
+      },
+      focus:function(){
+        this.$.markdown.focus();
+        console.log("focusing");
+      },
       markdownChanged:function(){
         this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
         cursor = this.$.markdown.selectionStart;
         n = this.markdown.length;
         secondLast = this.markdown.slice(n-2,n-1);
         if (cursor==n && secondLast=="\n"){
-          console.log("scroll down");
           $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
           $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
-          // setTimeout(function(){
-          //   $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
-          // },500);
         };
       },
       ready:function(){
         editor = this;
-
         this.$.preview.addEventListener("click",function(){
           var copyFrom = $('<textarea/>');
           copyFrom.text(markdown.toHTML(editor.markdown));
