@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown focus">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
@@ -37,16 +37,6 @@
   <script>
       Polymer('markdown-editor', {
       markdown:"",
-      eventDelegates:{
-        focus:"onFocus"
-      },
-      onFocus:function(){
-        editor = this;
-      },
-      focus:function(){
-        this.$.markdown.focus();
-        console.log("focusing");
-      },
       markdownChanged:function(){
         this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
         cursor = this.$.markdown.selectionStart;
@@ -56,6 +46,14 @@
           $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
           $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
         };
+      },
+      syncScroll:function(){
+        wrapperHeight = this.$.markdown.style.height;
+        innerHeight = this.$.markdown.scrollHeight;
+        previewHeight = this.$.preview.scrollHeight;
+        ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
+        previewPosition = $(this.$.markdown).scrollTop() * ratio;
+        $(this.$.preview).scrollTop(previewPosition);
       },
       ready:function(){
         editor = this;
@@ -68,14 +66,7 @@
           copyFrom.remove();
           document.querySelector("#toast").show();
         })
-        this.$.markdown.addEventListener("scroll",function(){
-          wrapperHeight = editor.$.markdown.style.height;
-          innerHeight = editor.$.markdown.scrollHeight;
-          previewHeight = editor.$.preview.scrollHeight;
-          ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
-          previewPosition = $(editor.$.markdown).scrollTop() * ratio;
-          $(editor.$.preview).scrollTop(previewPosition);
-        })
+        this.$.markdown.addEventListener("scroll",this.syncScroll.bind(this));
       }
     });
 </script>
