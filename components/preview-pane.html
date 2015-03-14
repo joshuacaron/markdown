@@ -1,4 +1,4 @@
-<polymer-element name="preview-pane" layout="" vertical="" attributes="markdown">
+<polymer-element name="preview-pane" layout vertical attributes="markdown previewHeight previewPosition">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
@@ -37,6 +37,11 @@
       },
       markdownChanged:function(x,y){
         this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+        this.previewHeight = this.$.preview.scrollHeight;
+      },
+      previewPositionChanged:function(){
+        console.log("scrolling preview");
+        $(this.$.preview).scrollTop(this.previewPosition);
       }
     });
 </script>

@@ -20,12 +20,31 @@
   </style>
   <div id="wrapper" layout horizontal flex>
     <textarea id="markdown" value="{{markdown}}" flex></textarea>
-    <preview-pane flex markdown="{{markdown}}"></preview-pane>
+    <preview-pane flex markdown="{{markdown}}" previewHeight="{{previewHeight}}" previewPosition="{{previewPosition}}"></preview-pane>
     </div>
   </template>
   <script>
       Polymer('markdown-editor', {
-      markdown:""
+      markdown:"",
+      // markdownChanged:function(){
+      //   var cursor = this.$.markdown.selectionStart;
+      //   if (cursor == this.markdown.length){
+      //     app=this;
+      //     wrapperHeight = app.$.markdown.style.height;
+      //     innerHeight = app.$.markdown.scrollHeight;
+      //     ratio = (innerHeight - wrapperHeight)/(app.previewHeight - wrapperHeight);
+      //     app.previewPosition = $(app.$.markdown).scrollTop() * ratio;
+      //   }
+      // },
+      ready:function(){
+        app = this;
+        this.$.markdown.addEventListener("scroll",function(){
+          wrapperHeight = app.$.markdown.style.height;
+          innerHeight = app.$.markdown.scrollHeight;
+          ratio = (innerHeight - wrapperHeight)/(app.previewHeight - wrapperHeight);
+          app.previewPosition = $(app.$.markdown).scrollTop() * ratio;
+        })
+      }
     });
 </script>
 </polymer-element>
