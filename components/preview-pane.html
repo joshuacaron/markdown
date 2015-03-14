@@ -1,20 +1,26 @@
-<polymer-element name="preview-pane" layout="" vertical="" attributes="markdown">
+<polymer-element name="preview-pane" layout vertical attributes="markdown">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
-  #preview {
-    padding:0 15px 15px;
-    font-family:"Open Sans";
+  #previewWrapper{
+    padding:0;
     margin:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+  #preview {
+    padding: 0 15px 15px;
+    margin:0;
+    overflow:hidden;
+    font-family:"Open Sans";
     font-size:16px;
     color:#212121;
     cursor:pointer;
-    overflow-y:auto;
-    /*background-color:black;*/
-    /*color:white;*/
   }
   </style>
-    <div id="preview" flex=""></div>
+    <div id="previewWrapper" flex layout vertical>
+      <div id="preview" flex></div>
+    </div>
     <!--<textarea hidden id="copy" value="{{convert(markdown)}}"></textarea>-->
   </template>
   <script>

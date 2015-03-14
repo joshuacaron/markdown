@@ -2,24 +2,18 @@
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
-  #markdown {
-    outline:none;
-    border:none;
-    border-right:solid 1px #e0e0e0;
-    resize:none;
-    padding:15px;
-    font-family:"Open Sans";
-    font-size:16px;
-    color:#212121;
-  }
-
   #wrapper {
     height:100%;
     width:100%;
   }
+  markdown-pane{
+    overflow-y:auto;
+    border-right:solid 1px #e0e0e0;
+  }
   </style>
   <div id="wrapper" layout horizontal flex>
-    <textarea id="markdown" value="{{markdown}}" flex></textarea>
+    <!-- <textarea id="markdown" value="{{markdown}}" flex></textarea> -->
+    <markdown-pane flex markdown="{{markdown}}"></markdown-pane>
     <preview-pane flex markdown="{{markdown}}"></preview-pane>
     </div>
   </template>
