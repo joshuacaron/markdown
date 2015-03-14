@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout="" vertical="" attributes="markdown">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
@@ -6,36 +6,70 @@
     height:100%;
     width:100%;
   }
-  markdown-pane{
+  #preview {
+    padding: 0 15px;
+    margin:0;
+    overflow-x:hidden;
     overflow-y:auto;
+    font-family:"Open Sans";
+    font-size:16px;
+    color:#212121;
+    cursor:pointer;
+  }
+  #markdown {
+    outline:none;
+    border:none;
     border-right:solid 1px #e0e0e0;
+    resize:none;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:15px;
+    font-family:"Open Sans";
+    font-size:16px;
+    color:#212121;
   }
   </style>
   <div id="wrapper" layout horizontal flex>
     <textarea id="markdown" value="{{markdown}}" flex></textarea>
-    <preview-pane flex markdown="{{markdown}}" previewHeight="{{previewHeight}}" previewPosition="{{previewPosition}}"></preview-pane>
+    <div id="preview" flex></div>
     </div>
   </template>
   <script>
       Polymer('markdown-editor', {
       markdown:"",
-      // markdownChanged:function(){
-      //   var cursor = this.$.markdown.selectionStart;
-      //   if (cursor == this.markdown.length){
-      //     app=this;
-      //     wrapperHeight = app.$.markdown.style.height;
-      //     innerHeight = app.$.markdown.scrollHeight;
-      //     ratio = (innerHeight - wrapperHeight)/(app.previewHeight - wrapperHeight);
-      //     app.previewPosition = $(app.$.markdown).scrollTop() * ratio;
-      //   }
-      // },
+      markdownChanged:function(){
+        this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+        cursor = this.$.markdown.selectionStart;
+        n = this.markdown.length;
+        secondLast = this.markdown.slice(n-2,n-1);
+        if (cursor==n && secondLast=="\n"){
+          console.log("scroll down");
+          $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
+          $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
+          // setTimeout(function(){
+          //   $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
+          // },500);
+        };
+      },
       ready:function(){
-        app = this;
+        editor = this;
+
+        this.$.preview.addEventListener("click",function(){
+          var copyFrom = $('<textarea/>');
+          copyFrom.text(markdown.toHTML(editor.markdown));
+          $('body').append(copyFrom);
+          copyFrom.select();
+          document.execCommand('copy');
+          copyFrom.remove();
+          document.querySelector("#toast").show();
+        })
         this.$.markdown.addEventListener("scroll",function(){
-          wrapperHeight = app.$.markdown.style.height;
-          innerHeight = app.$.markdown.scrollHeight;
-          ratio = (innerHeight - wrapperHeight)/(app.previewHeight - wrapperHeight);
-          app.previewPosition = $(app.$.markdown).scrollTop() * ratio;
+          wrapperHeight = editor.$.markdown.style.height;
+          innerHeight = editor.$.markdown.scrollHeight;
+          previewHeight = editor.$.preview.scrollHeight;
+          ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
+          previewPosition = $(editor.$.markdown).scrollTop() * ratio;
+          $(editor.$.preview).scrollTop(previewPosition);
         })
       }
     });
