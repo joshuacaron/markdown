@@ -73,7 +73,7 @@
       renderLaTeX:function(x){
         // Useless character that is unlikely to be typed. In practice doesn't seem to matter even if is typed.
         // Need to escape dollar signs or can't use at all.
-        x = x.replace("\\$","Ž");
+        x = x.replace(/\\\$/g,"Ž");
 
         lines = x.split("\n");
         output = "";
@@ -87,7 +87,8 @@
                 lineTemp += splitDisplay[i];
               }
               else {
-                lineTemp += katex.renderToString(splitDisplay[i],{displayMode:true});
+                try{lineTemp += katex.renderToString(splitDisplay[i],{displayMode:true});}
+                catch(err){lineTemp += "<p style=\"text-align:center;\">ŽŽ" + splitDisplay[i] + 'ŽŽ</p>';}
               }
             }
           }
@@ -102,7 +103,8 @@
                 line += splitInline[k];
               }
               else {
-                line += katex.renderToString(splitInline[k]);
+                try{line += katex.renderToString(splitInline[k]);}
+                catch(err){line += '$' + splitInline[k] + '$';}
               }
             }
           }
@@ -112,7 +114,7 @@
 
           output += line;
         }
-        output = output.replace("Ž","$");
+        output = output.replace(/Ž/g,"$");
         return output;
       },
 
