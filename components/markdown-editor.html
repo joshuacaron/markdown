@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
@@ -36,24 +36,29 @@
   </template>
   <script>
       Polymer('markdown-editor', {
+      syncScrollSetting:true,
       markdown:"",
       markdownChanged:function(){
         this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
-        cursor = this.$.markdown.selectionStart;
-        n = this.markdown.length;
-        secondLast = this.markdown.slice(n-2,n-1);
-        if (cursor==n && secondLast=="\n"){
-          $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
-          $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
-        };
+        if(this.syncScrollSetting == true){
+          cursor = this.$.markdown.selectionStart;
+          n = this.markdown.length;
+          secondLast = this.markdown.slice(n-2,n-1);
+          if (cursor==n && secondLast=="\n"){
+            $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
+            $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
+          };
+        }
       },
       syncScroll:function(){
-        wrapperHeight = this.$.markdown.style.height;
-        innerHeight = this.$.markdown.scrollHeight;
-        previewHeight = this.$.preview.scrollHeight;
-        ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
-        previewPosition = $(this.$.markdown).scrollTop() * ratio;
-        $(this.$.preview).scrollTop(previewPosition);
+        if (this.syncScrollSetting == true){
+          wrapperHeight = this.$.markdown.style.height;
+          innerHeight = this.$.markdown.scrollHeight;
+          previewHeight = this.$.preview.scrollHeight;
+          ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
+          previewPosition = $(this.$.markdown).scrollTop() * ratio;
+          $(this.$.preview).scrollTop(previewPosition);
+        }
       },
       ready:function(){
         editor = this;

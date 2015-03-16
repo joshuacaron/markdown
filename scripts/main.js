@@ -1,6 +1,7 @@
 var openDocuments = [];
 var previousDocuments = [];
 var restore = false;
+var settings = {};
 
 newPage = function(){
   app.pages.push({
@@ -205,11 +206,46 @@ openFileHelper = function(fileEntry,whenDone){
   });
 }
 
+loadSettings = function(){
+  chrome.storage.local.get('settings',function(e){
+    if(e.settings){
+      app.settings = e.openDocuments;
+    }
+    else {
+      app.settings = {
+        syncedScrolling : true,
+        testing : false,
+      }
+    }
+  });
+}
+
+openSettings = function(){
+  settingsOpen = false;
+  for(i=0;i<app.pages.length;++i){
+    if(app.pages[i].settings==true){
+      app.selected = i;
+      settingsOpen = true;
+    }
+  }
+  if(settingsOpen==false){
+    app.pages.push({
+      "settings":true
+    })
+    app.selected = app.pages.length -1;
+  }
+
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   app = document.querySelector("#auto-bind");
+
   app.selected=0;
   app.pages = [];
+
   restoreOldDocuments();
+
+  loadSettings();
 
   app.makeTitle = function(markdown,file,lastSave,page){
     path = "";
@@ -285,6 +321,10 @@ document.addEventListener('DOMContentLoaded', function(){
         case 'w':
             event.preventDefault();
             closeTab();
+            break;
+        case 'k':
+            event.preventDefault();
+            openSettings();
             break;
         }
     }

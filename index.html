@@ -11,6 +11,8 @@
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="components/html-tab.html">
 <link rel="import" href="bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="bower_components/core-label/core-label.html">
 
 
 <script src="scripts/main.js"></script>
@@ -26,20 +28,45 @@
 <div id="drag" flex></div>
 <paper-icon-button icon="clear" id="closeWindow" role="button"></paper-icon-button>
 </div>
+
 <template is="auto-binding" id="auto-bind">
 	<paper-tabs selected="{{selected}}">
+
 		<template repeat="{{page in pages}}"> 
-			<html-tab htmltitle="{{makeTitle(page.markdown,page.file,page.lastSave,page)}}"></html-tab>
+			<template if="{{!page.settings}}">
+        <html-tab htmltitle="{{makeTitle(page.markdown,page.file,page.lastSave,page)}}"></html-tab>
+      </template>
+
+      <template if="{{page.settings == true}}">
+        <html-tab htmltitle="Settings"></html-tab>
+      </template>
+
 		</template>
 	</paper-tabs>
+
 	<core-animated-pages flex transitions="cross-fade" selected="{{selected}}">
 		<template repeat="{{page in pages}}">
-		<section>
-			<markdown-editor cross-fade markdown="{{page.markdown}}"></markdown-editor>
-		</section>
+			<template if="{{page.settings == true}}">
+				<section layout vertical>
+          <p id="settingsOverview">Any settings you change are automatically saved. Feel free to close the tab with <i>Ctrl+w</i> after you are done.</p>
+          <div id="settingsWrapper" cross-fade flex layout vertical>
+            <core-label for layout horizontal>
+              <span flex>Synchronize scrolling between panels</span>
+              <paper-toggle-button checked="{{settings.syncedScrolling}}"></paper-toggle-button>
+            </core-label>
+          </div>
+        </section>
+			</template>
+
+			<template if="{{!page.settings}}">
+				<section>
+					<markdown-editor cross-fade markdown="{{page.markdown}}" syncScrollSetting="{{settings.syncedScrolling}}"></markdown-editor>
+				</section>
+			</template>
 		</template>
 	</core-animated-pages>
 </template>
+
 <paper-fab icon="add" id="fab"></paper-fab>
 <paper-toast id="toast" text="HTML Copied to Clipboard."></paper-toast>
 </body>
