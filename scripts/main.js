@@ -2,6 +2,7 @@ var openDocuments = [];
 var previousDocuments = [];
 var restore = false;
 var settings = {};
+var asTimer = "";
 
 newPage = function(){
   app.pages.push({
@@ -177,6 +178,27 @@ saveFile = function(){
   }
 }
 
+saveHelper = function(j){
+  if(app.pages[j].file) {
+    writableFileEntry = app.pages[j].file;
+    writableFileEntry.createWriter(function(writer) {
+      writer.onerror = errorHandler;
+    writer.onwriteend = function() {
+        if (writer.length === 0) {
+            //fileWriter has been reset, write file
+            writer.write(new Blob([app.pages[j].markdown], {type: 'text/plain'}));
+            app.pages[j].lastSave = app.pages[j].markdown;
+            // console.log(app.pages[app.selected]);
+        } else {
+            //file has been overwritten with blob
+            //use callback or resolve promise
+        }
+    };
+    writer.truncate(0);
+    }, errorHandler);
+  }
+}
+
 openFile = function(){
   var chosenFileEntry = null;
   chrome.fileSystem.chooseEntry({type: 'openWritableFile'}, function(readOnlyEntry) {
@@ -216,7 +238,10 @@ loadSettings = function(){
         syncedScrolling : true,
         testing : false,
         alwaysOnTop: false,
-        fontSize: "16px"
+        fontSize: "16px",
+        monospaceFont : false,
+        autosaveEnabled : false,
+        autosaveInterval : "1"
       }
     }
   });
@@ -237,6 +262,21 @@ openSettings = function(){
     app.selected = app.pages.length -1;
   }
 
+}
+
+autosave = function(){
+  if(app.settings.autosaveEnabled == true){
+    asTimer = setInterval(function(){
+      console.log("autosaving");
+
+      for(i=0;i<app.pages.length;++i){
+        if(app.pages[i].file){
+          saveHelper(i);
+        }
+      }
+
+    },app.settings.autosaveInterval*60000)
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -288,6 +328,11 @@ document.addEventListener('DOMContentLoaded', function(){
         }
       }
     });
+
+    document.addEventListener("autosave-update",function(){
+      clearInterval(asTimer);
+      autosave();
+    })
 
     $(window).bind('keydown', function(event) {
     if (event.ctrlKey || event.metaKey) {

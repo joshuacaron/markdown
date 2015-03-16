@@ -1,37 +1,37 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
-  #wrapper {
-    height:100%;
-    width:100%;
-  }
-  #preview {
-    padding: 0 15px;
-    margin:0;
-    overflow-x:hidden;
-    overflow-y:auto;
-    font-family:"Open Sans";
-    font-size:{{fontSize}};
-    color:#212121;
-    cursor:pointer;
-  }
-  #markdown {
-    outline:none;
-    border:none;
-    border-right:solid 1px #e0e0e0;
-    resize:none;
-    overflow-y:auto;
-    overflow-x:hidden;
-    padding:15px;
-    font-family:"Open Sans";
-    font-size:{{fontSize}};
-    color:#212121;
-  }
-  </style>
-  <div id="wrapper" layout horizontal flex>
-    <textarea id="markdown" value="{{markdown}}" autofocus flex></textarea>
-    <div id="preview" flex></div>
+      #preview {
+        padding: 0 15px;
+        margin:0;
+        overflow-x:hidden;
+        overflow-y:auto;
+        font-family:"Open Sans";
+        font-size:{{fontSize}};
+        color:#212121;
+        cursor:pointer;
+      }
+      #markdown {
+        outline:none;
+        border:none;
+        border-right:solid 1px #e0e0e0;
+        resize:none;
+        overflow-y:auto;
+        overflow-x:hidden;
+        padding:15px;
+        font-family:{{monospaceFont | markdownFont}};
+        font-size:{{fontSize}};
+        color:#212121;
+      }
+      #wrapper {
+        height:100%;
+        width:100%;
+      }
+    </style>
+    <div id="wrapper" layout horizontal flex>
+      <textarea id="markdown" value="{{markdown}}" autofocus flex></textarea>
+      <div id="preview" flex></div>
     </div>
   </template>
   <script>
@@ -58,6 +58,14 @@
           ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
           previewPosition = $(this.$.markdown).scrollTop() * ratio;
           $(this.$.preview).scrollTop(previewPosition);
+        }
+      },
+      markdownFont:function(value){
+        if (value== true){
+          return "Droid Sans Mono";
+        }
+        else {
+          return "Open Sans";
         }
       },
       ready:function(){
