@@ -59,15 +59,15 @@
 
         }
 
-        if(this.syncScrollSetting == true){
-          cursor = this.$.markdown.selectionStart;
-          n = this.markdown.length;
-          secondLast = this.markdown.slice(n-2,n-1);
-          if (cursor==n && secondLast=="\n"){
-            $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
+        cursor = this.$.markdown.selectionStart;
+        n = this.markdown.length;
+        secondLast = this.markdown.slice(n-2,n-1);
+        if (cursor==n && secondLast=="\n"){
+          $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
+          if(this.syncScrollSetting == true){
             $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
           };
-        }
+        };
       },
 
       renderLaTeX:function(x){
