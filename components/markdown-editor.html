@@ -1,5 +1,4 @@
 <polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX">
-  <!-- outermost template defines the element's shadow DOM -->
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
     <script src="katex.min.js"></script>
@@ -72,38 +71,49 @@
       },
 
       renderLaTeX:function(x){
-        splitLaTeXDisplay = x.split("$$");
-        if (splitLaTeXDisplay.length>1&&splitLaTeXDisplay.length%2==1){
-          formattedMath = "";
-          for (i=0;i<splitLaTeXDisplay.length;++i){
-            if (i%2==0){
-              formattedMath += splitLaTeXDisplay[i];
-            }
-            else {
-              formattedMath += katex.renderToString(splitLaTeXDisplay[i],{displayMode:true});
-            }
-          }
-        }
-        else {
-          formattedMath = x;
-        }
+        // Useless character that is unlikely to be typed. In practice doesn't seem to matter even if is typed.
+        // Need to escape dollar signs or can't use at all.
+        x = x.replace("\\$","Ž");
 
-        splitLaTeX = formattedMath.split("$");
-        if (splitLaTeX.length>1&&splitLaTeX.length%2==1){
-          formattedMath = "";
-          for (i=0;i<splitLaTeX.length;++i){
-            if (i%2==0){
-              formattedMath += splitLaTeX[i];
-            }
-            else {
-              formattedMath += katex.renderToString(splitLaTeX[i]);
+        lines = x.split("\n");
+        output = "";
+        for(j=0;j<lines.length;j++){
+          lineTemp = "";
+          line = "";
+          splitDisplay = lines[j].split("$$");
+          if(splitDisplay.length>1 && splitDisplay.length%2==1){
+            for(i=0;i<splitDisplay.length;++i){
+              if(i%2==0){
+                lineTemp += splitDisplay[i];
+              }
+              else {
+                lineTemp += katex.renderToString(splitDisplay[i],{displayMode:true});
+              }
             }
           }
-          return formattedMath;
+          else {
+            lineTemp = lines[j];
+          }
+
+          splitInline = lineTemp.split("$");
+          if(splitInline.length>1 && splitInline.length%2==1){
+            for(k=0;k<splitInline.length;++k){
+              if(k%2==0){
+                line += splitInline[k];
+              }
+              else {
+                line += katex.renderToString(splitInline[k]);
+              }
+            }
+          }
+          else {
+            line = lineTemp;
+          }
+
+          output += line;
         }
-        else {
-          return x;
-        }
+        output = output.replace("Ž","$");
+        return output;
       },
 
       syncScroll:function(){
