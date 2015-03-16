@@ -72,7 +72,23 @@
       },
 
       renderLaTeX:function(x){
-        splitLaTeX = x.split("$");
+        splitLaTeXDisplay = x.split("$$");
+        if (splitLaTeXDisplay.length>1&&splitLaTeXDisplay.length%2==1){
+          formattedMath = "";
+          for (i=0;i<splitLaTeXDisplay.length;++i){
+            if (i%2==0){
+              formattedMath += splitLaTeXDisplay[i];
+            }
+            else {
+              formattedMath += katex.renderToString(splitLaTeXDisplay[i],{displayMode:true});
+            }
+          }
+        }
+        else {
+          formattedMath = x;
+        }
+
+        splitLaTeX = formattedMath.split("$");
         if (splitLaTeX.length>1&&splitLaTeX.length%2==1){
           formattedMath = "";
           for (i=0;i<splitLaTeX.length;++i){
