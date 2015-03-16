@@ -215,7 +215,8 @@ loadSettings = function(){
       app.settings = {
         syncedScrolling : true,
         testing : false,
-        alwaysOnTop: false
+        alwaysOnTop: false,
+        fontSize: "16px"
       }
     }
   });

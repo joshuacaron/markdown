@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
     <style>
@@ -12,7 +12,7 @@
     overflow-x:hidden;
     overflow-y:auto;
     font-family:"Open Sans";
-    font-size:16px;
+    font-size:{{fontSize}};
     color:#212121;
     cursor:pointer;
   }
@@ -25,7 +25,7 @@
     overflow-x:hidden;
     padding:15px;
     font-family:"Open Sans";
-    font-size:16px;
+    font-size:{{fontSize}};
     color:#212121;
   }
   </style>

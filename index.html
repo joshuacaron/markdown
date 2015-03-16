@@ -14,6 +14,7 @@
 <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="bower_components/core-label/core-label.html">
 <link rel='import' href="components/settings-pane.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
 
 
 <script src="scripts/main.js"></script>
@@ -55,7 +56,7 @@
 
 			<template if="{{!page.settings}}">
 				<section>
-					<markdown-editor cross-fade markdown="{{page.markdown}}" syncScrollSetting="{{settings.syncedScrolling}}"></markdown-editor>
+					<markdown-editor cross-fade markdown="{{page.markdown}}" syncScrollSetting="{{settings.syncedScrolling}}" fontSize="{{settings.fontSize}}"></markdown-editor>
 				</section>
 			</template>
 		</template>

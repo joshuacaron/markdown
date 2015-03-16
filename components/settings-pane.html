@@ -35,6 +35,10 @@
         <span flex>Window always on top</span>
         <paper-toggle-button checked="{{settings.alwaysOnTop}}"></paper-toggle-button>
       </core-label>
+      <core-label for layout horizontal>
+        <span flex>Font size</span>
+        <paper-input value="{{settings.fontSize}}"></paper-input>
+      </core-label>
     </div>
   </template>
   <script>
@@ -42,13 +46,17 @@
         settings:{},
         observe:{
           'settings.syncedScrolling': 'scrollSettingUpdated',
-          'settings.alwaysOnTop': 'onTopSettingUpdated'
+          'settings.alwaysOnTop': 'onTopSettingUpdated',
+          'settings.fontSize' : 'fontSizeUpdated'
         },
         scrollSettingUpdated:function(o,n){
           console.log("scroll setting updated");
         },
         onTopSettingUpdated:function(o,n){
           chrome.app.window.current().setAlwaysOnTop(n);
+        },
+        fontSizeUpdated:function(o,n){
+          console.log("font size changed to " + n);
         }
     });
 </script>
