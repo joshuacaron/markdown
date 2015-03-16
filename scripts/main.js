@@ -241,7 +241,8 @@ loadSettings = function(){
         fontSize: "16px",
         monospaceFont : false,
         autosaveEnabled : false,
-        autosaveInterval : "1"
+        autosaveInterval : "1",
+        renderLaTeX: true
       }
     }
   });

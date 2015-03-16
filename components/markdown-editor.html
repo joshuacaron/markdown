@@ -1,6 +1,8 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX">
   <!-- outermost template defines the element's shadow DOM -->
   <template>
+    <link href="katex.min.css" rel="stylesheet" type="text/css">
+    <script src="katex.min.js"></script>
     <style>
       #preview {
         padding: 0 15px;
@@ -37,9 +39,27 @@
   <script>
       Polymer('markdown-editor', {
       syncScrollSetting:true,
+      renderKaTeX:false,
+      renderKaTeXChanged:function(){
+        if(this.renderKaTeX == true){
+          this.injectBoundHTML(this.renderLaTeX(markdown.toHTML(this.markdown)),this.$.preview);
+        }
+        else {
+          this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+
+        }
+      },
       markdown:"",
       markdownChanged:function(){
-        this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+
+        if(this.renderKaTeX == true){
+          this.injectBoundHTML(this.renderLaTeX(markdown.toHTML(this.markdown)),this.$.preview);
+        }
+        else {
+          this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+
+        }
+
         if(this.syncScrollSetting == true){
           cursor = this.$.markdown.selectionStart;
           n = this.markdown.length;
@@ -50,6 +70,26 @@
           };
         }
       },
+
+      renderLaTeX:function(x){
+        splitLaTeX = x.split("$");
+        if (splitLaTeX.length>1&&splitLaTeX.length%2==1){
+          formattedMath = "";
+          for (i=0;i<splitLaTeX.length;++i){
+            if (i%2==0){
+              formattedMath += splitLaTeX[i];
+            }
+            else {
+              formattedMath += katex.renderToString(splitLaTeX[i]);
+            }
+          }
+          return formattedMath;
+        }
+        else {
+          return x;
+        }
+      },
+
       syncScroll:function(){
         if (this.syncScrollSetting == true){
           wrapperHeight = this.$.markdown.style.height;
