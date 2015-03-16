@@ -1,0 +1,55 @@
+<polymer-element name="settings-pane" layout vertical attributes="settings">
+  <!-- outermost template defines the element's shadow DOM -->
+  <template>
+    <style>
+ 
+      #settingsWrapper {
+        max-width:550px;
+        padding:30px;
+        font-size:16px;
+        font-family:"Open Sans";
+      }
+
+      #settingsOverview {
+        padding:15px 30px;
+        border-bottom:solid 1px #e0e0e0;
+        font-size:16px;
+      }
+
+      paper-toggle-button::shadow [checked] .toggle {
+        background-color: #F50057;
+      }
+
+      paper-toggle-button::shadow [checked] .toggle-ink {
+        color: #F50057;
+      }
+    </style>
+    
+    <p id="settingsOverview">Any settings you change are automatically saved. Feel free to close the tab with <i>Ctrl+w</i> after you are done.</p>
+    <div id="settingsWrapper" cross-fade flex layout vertical>
+      <core-label for layout horizontal>
+        <span flex>Synchronize scrolling between panels</span>
+        <paper-toggle-button checked="{{settings.syncedScrolling}}"></paper-toggle-button>
+      </core-label>
+      <core-label for layout horizontal>
+        <span flex>Window always on top</span>
+        <paper-toggle-button checked="{{settings.alwaysOnTop}}"></paper-toggle-button>
+      </core-label>
+    </div>
+  </template>
+  <script>
+      Polymer('settings-pane', {
+        settings:{},
+        observe:{
+          'settings.syncedScrolling': 'scrollSettingUpdated',
+          'settings.alwaysOnTop': 'onTopSettingUpdated'
+        },
+        scrollSettingUpdated:function(o,n){
+          console.log("scroll setting updated");
+        },
+        onTopSettingUpdated:function(o,n){
+          chrome.app.window.current().setAlwaysOnTop(n);
+        }
+    });
+</script>
+</polymer-element>

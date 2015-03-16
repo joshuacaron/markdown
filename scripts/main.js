@@ -215,6 +215,7 @@ loadSettings = function(){
       app.settings = {
         syncedScrolling : true,
         testing : false,
+        alwaysOnTop: false
       }
     }
   });

@@ -13,6 +13,7 @@
 <link rel="import" href="bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="bower_components/core-label/core-label.html">
+<link rel='import' href="components/settings-pane.html">
 
 
 <script src="scripts/main.js"></script>
@@ -48,13 +49,7 @@
 		<template repeat="{{page in pages}}">
 			<template if="{{page.settings == true}}">
 				<section layout vertical>
-          <p id="settingsOverview">Any settings you change are automatically saved. Feel free to close the tab with <i>Ctrl+w</i> after you are done.</p>
-          <div id="settingsWrapper" cross-fade flex layout vertical>
-            <core-label for layout horizontal>
-              <span flex>Synchronize scrolling between panels</span>
-              <paper-toggle-button checked="{{settings.syncedScrolling}}"></paper-toggle-button>
-            </core-label>
-          </div>
+          <settings-pane settings="{{settings}}" flex></settings-pane>
         </section>
 			</template>
 
