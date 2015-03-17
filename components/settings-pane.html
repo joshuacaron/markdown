@@ -55,6 +55,10 @@
         <span>Render LaTeX</span>
         <paper-toggle-button checked="{{settings.renderLaTeX}}"></paper-toggle-button>
       </core-label>
+      <core-label for layout vertical>
+        <span>Delay preview until pause typing</span>
+        <paper-toggle-button checked="{{settings.debounce}}"></paper-toggle-button>
+      </core-label>
     </div>
   </template>
   <script>

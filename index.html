@@ -60,7 +60,7 @@
 
 			<template if="{{!page.settings}}">
 				<section>
-					<markdown-editor cross-fade markdown="{{page.markdown}}" syncScrollSetting="{{settings.syncedScrolling}}" fontSize="{{settings.fontSize}}" monospaceFont="{{settings.monospaceFont}}" renderKaTeX="{{settings.renderLaTeX}}"></markdown-editor>
+					<markdown-editor cross-fade markdown="{{page.markdown}}" syncScrollSetting="{{settings.syncedScrolling}}" fontSize="{{settings.fontSize}}" monospaceFont="{{settings.monospaceFont}}" renderKaTeX="{{settings.renderLaTeX}}" debounce="{{settings.debounce}}"></markdown-editor>
 				</section>
 			</template>
 		</template>

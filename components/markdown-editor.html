@@ -1,7 +1,8 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX debounce">
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
     <script src="katex.min.js"></script>
+    <script src="../scripts/underscore-min.js"></script>
     <style>
       #preview {
         padding: 0 15px;
@@ -49,8 +50,8 @@
         }
       },
       markdown:"",
-      markdownChanged:function(){
 
+      updatePreview:function(){
         if(this.renderKaTeX == true){
           this.injectBoundHTML(this.renderLaTeX(markdown.toHTML(this.markdown)),this.$.preview);
         }
@@ -68,6 +69,15 @@
             $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
           };
         };
+      },
+
+      markdownChanged:function(){
+        if(this.debounce == true){
+          debouncePreview();
+        }
+        else{
+          this.updatePreview();
+        }
       },
 
       renderLaTeX:function(x){
@@ -138,6 +148,7 @@
       },
       ready:function(){
         editor = this;
+        debouncePreview = _.debounce(this.updatePreview.bind(this),900);
         this.$.preview.addEventListener("click",function(){
           var copyFrom = $('<textarea/>');
           copyFrom.text(markdown.toHTML(editor.markdown));
