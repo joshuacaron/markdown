@@ -36,7 +36,7 @@
 </div>
 
 <template is="auto-binding" id="auto-bind">
-	<paper-tabs selected="{{selected}}">
+	<paper-tabs selected="{{selected}}" scrollable hideScrollButton layout horizontal>
 
 		<template repeat="{{page in pages}}"> 
 			<template if="{{!page.settings}}">

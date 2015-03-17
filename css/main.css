@@ -22,7 +22,7 @@ core-toolbar, paper-tabs{
 }
 
 html-tab, paper-tab {
-	max-width:150px;
+	min-width:150px;
 	/*-webkit-app-region:no-drag;*/
 }
 
