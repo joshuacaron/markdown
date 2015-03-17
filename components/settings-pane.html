@@ -3,17 +3,29 @@
   <template>
     <style>
  
+      @media (max-width:649px){
+        #settingsWrapper {
+          width:95vw !important;
+        }
+      }
+
       #settingsWrapper {
-        max-width:550px;
-        padding:30px;
+        width:650px;
+        padding:30px 0px;
         font-size:16px;
         font-family:"Open Sans";
+        margin:0 auto;
       }
 
       #settingsOverview {
-        padding:15px 30px;
+        padding:15px 30px 30px;
         border-bottom:solid 1px #e0e0e0;
         font-size:16px;
+        text-align: center;
+      }
+
+      paper-toggle-button {
+        margin-bottom:-10px;
       }
 
       paper-toggle-button::shadow [checked] .toggle {
@@ -23,11 +35,37 @@
       paper-toggle-button::shadow [checked] .toggle-ink {
         color: #F50057;
       }
+
+      core-label {
+        margin-bottom:20px;
+      }
+
+      paper-input {
+        width:50px;
+      }
+
+      paper-input /deep/ .focused-underline {
+        /* line color when the input is focused */
+        background-color: #F50057;
+      }
+
+
+      paper-slider::shadow #sliderBar::shadow #activeProgress {
+        background-color: #F50057;
+      }
+
+      paper-slider::shadow #sliderKnobInner {
+        background-color: #F50057;
+      }
+
+      paper-slider::shadow #sliderKnobInner::before {
+        background-color: #F50057;
+      }
     </style>
     
     <p id="settingsOverview">Any settings you change are automatically saved. Feel free to close the tab with <i>Ctrl+w</i> after you are done.</p>
     <div id="settingsWrapper" cross-fade flex layout vertical>
-      <core-label for layout horizontal>
+      <core-label for layout horizontal wrap>
         <span flex>Synchronize scrolling between panels</span>
         <paper-toggle-button checked="{{settings.syncedScrolling}}"></paper-toggle-button>
       </core-label>
@@ -49,14 +87,16 @@
       </core-label>
       <core-label for layout vertical>
         <span>Auto Save Interval (minutes)</span>
-        <paper-slider min="1" max="30" editable value="{{settings.autosaveInterval}}"></paper-slider>
+        <div layout horizontal>
+          <paper-slider flex min="1" max="30" editable value="{{settings.autosaveInterval}}"></paper-slider>
+        </div>
       </core-label>
-      <core-label for layout vertical>
-        <span>Render LaTeX</span>
+      <core-label for layout horizontal>
+        <span flex>Render LaTeX code</span>
         <paper-toggle-button checked="{{settings.renderLaTeX}}"></paper-toggle-button>
       </core-label>
-      <core-label for layout vertical>
-        <span>Delay preview until pause typing</span>
+      <core-label for layout horizontal>
+        <span flex>Delay preview until pause typing</span>
         <paper-toggle-button checked="{{settings.debounce}}"></paper-toggle-button>
       </core-label>
     </div>
@@ -65,23 +105,25 @@
       Polymer('settings-pane', {
         settings:{},
         observe:{
-          'settings.syncedScrolling': 'scrollSettingUpdated',
+          'settings.syncedScrolling': 'settingsUpdated',
           'settings.alwaysOnTop': 'onTopSettingUpdated',
-          'settings.fontSize' : 'fontSizeUpdated',
+          'settings.fontSize' : 'settingsUpdated',
+          'settings.monospaceFont' : 'settingsUpdated',
           'settings.autosaveEnabled' : 'autosaveUpdated',
-          'settings.autosaveInterval' : 'autosaveUpdated'
+          'settings.autosaveInterval' : 'autosaveUpdated',
+          'settings.renderLaTeX' : 'settingsUpdated',
+          'settings.debounce' : 'settingsUpdated'
         },
-        scrollSettingUpdated:function(o,n){
-          console.log("scroll setting updated");
+        settingsUpdated:function(){
+          this.fire("settings-changed",{msg:"settinsg changed"});
         },
         onTopSettingUpdated:function(o,n){
           chrome.app.window.current().setAlwaysOnTop(n);
-        },
-        fontSizeUpdated:function(o,n){
-          console.log("font size changed to " + n);
+          this.settingsUpdated();
         },
         autosaveUpdated:function(){
           this.fire("autosave-update",{msg:"autosave updated"});
+          this.settingsUpdated();
         }
     });
 </script>

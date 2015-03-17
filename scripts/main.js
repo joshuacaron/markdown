@@ -231,23 +231,30 @@ openFileHelper = function(fileEntry,whenDone){
 loadSettings = function(){
   chrome.storage.local.get('settings',function(e){
     if(e.settings){
-      app.settings = e.openDocuments;
+      app.settings = e.settings;
+      console.log("found settings to restore");
     }
     else {
       app.settings = {
         syncedScrolling : true,
-        testing : false,
         alwaysOnTop: false,
         fontSize: "16px",
         monospaceFont : false,
         autosaveEnabled : false,
-        autosaveInterval : "1",
+        autosaveInterval : "5",
         renderLaTeX: false,
         debounce: false
       }
     }
   });
 }
+
+saveSettings = function(){
+  chrome.storage.local.set({'settings':app.settings},function(){
+    
+  });
+}
+
 
 openSettings = function(){
   settingsOpen = false;
@@ -334,7 +341,11 @@ document.addEventListener('DOMContentLoaded', function(){
     document.addEventListener("autosave-update",function(){
       clearInterval(asTimer);
       autosave();
-    })
+    });
+
+    document.addEventListener("settings-changed",function(){
+      saveSettings();
+    });
 
     $(window).bind('keydown', function(event) {
     if (event.ctrlKey || event.metaKey) {

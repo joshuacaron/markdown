@@ -9,6 +9,10 @@ core-toolbar, paper-tabs{
 	color:white;
 }
 
+settings-pane {
+	overflow:auto;
+}
+
 /*paper-tabs {
 	-webkit-app-region:drag;
 }*/
