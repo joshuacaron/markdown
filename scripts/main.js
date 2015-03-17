@@ -238,7 +238,7 @@ loadSettings = function(){
         autosaveInterval : "5",
         renderLaTeX: false,
         debounce: false,
-        useMaruku: true
+        useMaruku: false
   }
 
   chrome.storage.local.get('settings',function(e){
@@ -251,7 +251,6 @@ loadSettings = function(){
           app.settings[index] = value;
         }
       })
-      console.log(app.settings);
     }
     else {
       app.settings = defaultSettings;

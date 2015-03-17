@@ -99,6 +99,10 @@
         <span flex>Delay preview until pause typing</span>
         <paper-toggle-button checked="{{settings.debounce}}"></paper-toggle-button>
       </core-label>
+      <core-label for layout horizontal>
+        <span flex>Use Maruku markdown syntax (instead of Gruber)</span>
+        <paper-toggle-button checked="{{settings.useMaruku}}"></paper-toggle-button>
+      </core-label>
     </div>
   </template>
   <script>

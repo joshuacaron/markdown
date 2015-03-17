@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX debounce">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX debounce useMaruku">
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
     <script src="katex.min.js"></script>
@@ -41,22 +41,30 @@
       syncScrollSetting:true,
       renderKaTeX:false,
       renderKaTeXChanged:function(){
-        if(this.renderKaTeX == true){
-          this.injectBoundHTML(this.renderLaTeX(markdown.toHTML(this.markdown)),this.$.preview);
-        }
-        else {
-          this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
-
-        }
+        this.updatePreview();
       },
       markdown:"",
+      useMaruku:false,
+      useMarukuChanged:function(){
+        this.updatePreview();
+      },
+
+      convertMarkdown: function(x){
+        if(this.useMaruku == true){
+          return markdown.toHTML(x,'Maruku');
+        }
+        else {
+          return markdown.toHTML(x);
+        }
+
+      },
 
       updatePreview:function(){
         if(this.renderKaTeX == true){
-          this.injectBoundHTML(this.renderLaTeX(markdown.toHTML(this.markdown)),this.$.preview);
+          this.injectBoundHTML(this.renderLaTeX(this.convertMarkdown(this.markdown)),this.$.preview);
         }
         else {
-          this.injectBoundHTML(markdown.toHTML(this.markdown),this.$.preview);
+          this.injectBoundHTML(this.convertMarkdown(this.markdown),this.$.preview);
 
         }
 
@@ -151,7 +159,7 @@
         debouncePreview = _.debounce(this.updatePreview.bind(this),900);
         this.$.preview.addEventListener("click",function(){
           var copyFrom = $('<textarea/>');
-          copyFrom.text(markdown.toHTML(editor.markdown));
+          copyFrom.text(this.convertMarkdown(editor.markdown));
           $('body').append(copyFrom);
           copyFrom.select();
           document.execCommand('copy');
