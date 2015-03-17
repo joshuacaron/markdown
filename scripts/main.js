@@ -229,13 +229,7 @@ openFileHelper = function(fileEntry,whenDone){
 }
 
 loadSettings = function(){
-  chrome.storage.local.get('settings',function(e){
-    if(e.settings){
-      app.settings = e.settings;
-      console.log("found settings to restore");
-    }
-    else {
-      app.settings = {
+  var defaultSettings = {
         syncedScrolling : true,
         alwaysOnTop: false,
         fontSize: "16px",
@@ -243,8 +237,24 @@ loadSettings = function(){
         autosaveEnabled : false,
         autosaveInterval : "5",
         renderLaTeX: false,
-        debounce: false
-      }
+        debounce: false,
+        useMaruku: true
+  }
+
+  chrome.storage.local.get('settings',function(e){
+    if(e.settings){
+      app.settings = e.settings;
+      console.log("found settings to restore");
+
+      _.each(defaultSettings,function(value,index){
+        if (!app.settings[index]){
+          app.settings[index] = value;
+        }
+      })
+      console.log(app.settings);
+    }
+    else {
+      app.settings = defaultSettings;
     }
   });
 }
