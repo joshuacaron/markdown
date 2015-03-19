@@ -95,10 +95,10 @@
         <span flex>Render LaTeX code</span>
         <paper-toggle-button checked="{{settings.renderLaTeX}}"></paper-toggle-button>
       </core-label>
-      <core-label for layout horizontal>
+<!--       <core-label for layout horizontal>
         <span flex>Delay preview until pause typing</span>
         <paper-toggle-button checked="{{settings.debounce}}"></paper-toggle-button>
-      </core-label>
+      </core-label> -->
       <core-label for layout horizontal>
         <span flex>Use Maruku markdown syntax (instead of Gruber)</span>
         <paper-toggle-button checked="{{settings.useMaruku}}"></paper-toggle-button>
@@ -115,8 +115,8 @@
           'settings.monospaceFont' : 'settingsUpdated',
           'settings.autosaveEnabled' : 'autosaveUpdated',
           'settings.autosaveInterval' : 'autosaveUpdated',
-          'settings.renderLaTeX' : 'settingsUpdated',
-          'settings.debounce' : 'settingsUpdated'
+          'settings.renderLaTeX' : 'settingsUpdated'
+          // 'settings.debounce' : 'settingsUpdated'
         },
         settingsUpdated:function(){
           this.fire("settings-changed",{msg:"settinsg changed"});

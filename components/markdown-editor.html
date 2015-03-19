@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX debounce useMaruku">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX useMaruku">
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
     <script src="katex.min.js"></script>
@@ -13,6 +13,7 @@
         font-size:{{fontSize}};
         color:#212121;
         cursor:pointer;
+        word-wrap:break-word;
       }
       #markdown {
         outline:none;
@@ -79,13 +80,9 @@
         };
       },
 
+
       markdownChanged:function(){
-        if(this.debounce == true){
-          debouncePreview();
-        }
-        else{
-          this.updatePreview();
-        }
+        this.updatePreview();
       },
 
       renderLaTeX:function(x){
@@ -154,10 +151,7 @@
           return "Open Sans";
         }
       },
-      ready:function(){
-        editor = this;
-        debouncePreview = _.debounce(this.updatePreview.bind(this),900);
-        this.$.preview.addEventListener("click",function(){
+      copyPreview:function(){
           var copyFrom = $('<textarea/>');
           copyFrom.text(this.convertMarkdown(editor.markdown));
           $('body').append(copyFrom);
@@ -165,7 +159,10 @@
           document.execCommand('copy');
           copyFrom.remove();
           document.querySelector("#toast").show();
-        })
+      },
+      ready:function(){
+        editor = this;
+        this.$.preview.addEventListener("click",this.copyPreview.bind(this));
         this.$.markdown.addEventListener("scroll",this.syncScroll.bind(this));
       }
     });

@@ -9,20 +9,19 @@ newPage = function(){
     "markdown":"Markdown Overview\n\
 =================\n\
 \n\
-Welcome to **Markdown**. Everything you write is displayed formatted in the right pane. *Click* on the right pane to copy the formatted text as HTML.\n\
+Welcome to **Markdown**. \n\
 \n\
-Options\n\
------------\n\
-- You can format text as *italics* or **bold**.\n\
-- List can be made with numbers or bullets.\n\
-- [Links](http://www.google.ca) can also be added.\n\
+- Everything you write is instantly formatted.\n\
+- *Click* on the right pane to copy the formatted text as HTML.\n\
+- The rest of the formatting options can be seen here: `https://daringfireball.net/projects/markdown/`\n\
 \n\
-There are a number of useful keyboard shortcuts too:\n\
+Right click on the tabs bar to see the menu. There are a number of useful keyboard shortcuts:\n\
 \n\
+1. *Ctrl+k*: Open settings (can change font size, render math, etc.)\n\
 1. *Ctrl+n/Ctrl+t*: Create a new tab.\n\
 1. *Ctrl+o*: Open a file.\n\
 1. *Ctrl+s/Ctrl+Shift+s*: Save/save as a file.\n\
-1. *Ctrl+p*: Print the current tab.\n\
+1. *Ctrl+p*: Print the current tab (or save as pdf).\n\
 1. *Ctrl+w*: Close the current tab.\n\
 1. *Ctrl+Tab*: Cycle through the tabs.\n\
 \n\
@@ -85,6 +84,9 @@ cycleTabs = function(){
 
 saveAs = function(){
   console.log("saving as");
+  if(app.pages[app.selected].file){
+    prevDocument = app.pages[app.selected].file;
+  }
     chrome.fileSystem.chooseEntry({type: 'saveFile'}, function(writableFileEntry) {
       app.pages[app.selected].file = writableFileEntry;
     writableFileEntry.createWriter(function(writer) {
@@ -96,6 +98,10 @@ saveAs = function(){
             writer.write(new Blob([app.pages[app.selected].markdown], {type: 'text/plain'}));
             app.pages[app.selected].lastSave = app.pages[app.selected].markdown;
             addToOpenDocuments(writableFileEntry);
+            if(prevDocument){
+              // Removes previous name so doesn't open both
+              removeFromOpenDocuments(prevDocument);
+            }
             // console.log(app.pages[app.selected]);
         } else {
             //file has been overwritten with blob
@@ -237,7 +243,7 @@ loadSettings = function(){
         autosaveEnabled : false,
         autosaveInterval : "5",
         renderLaTeX: false,
-        debounce: false,
+        // debounce: false,
         useMaruku: false
   }
 
@@ -397,5 +403,31 @@ document.addEventListener('DOMContentLoaded', function(){
             break;
         }
     }
-});
+  });
+
+  chrome.contextMenus.onClicked.addListener(function(itemData) {
+    switch (itemData.menuItemId){
+      case 'context-settings':
+        openSettings();
+        break;
+      case 'context-open':
+        openFile();
+        break;
+      case 'context-save':
+        saveFile();
+        break;
+      case 'context-saveas':
+        saveAs();
+        break;
+      case 'context-close-current-tab':
+        closeTab();
+        break;
+      case 'context-new':
+        newPage();
+        break;
+      case 'context-exit':
+        window.close();
+        break;
+    }
+  });
 });

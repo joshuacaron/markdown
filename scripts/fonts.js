@@ -25,3 +25,4 @@ loadFont("'Open Sans'","normal","400","https://fonts.gstatic.com/s/opensans/v10/
 loadFont("'Open Sans'","italic","400","https://fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBo4P5ICox8Kq3LLUNMylGO4.woff2")
 loadFont("'Open Sans'","normal","700","https://fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzBUOjZSKWg4xBWp_C_qQx0o.woff2")
 loadFont("'Open Sans'","italic","700","https://fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxolIZu-HDpmDIZMigmsroc4.woff2")
+loadFont("'Droid Sans Mono'","normal","400","https://fonts.gstatic.com/s/droidsansmono/v7/ns-m2xQYezAtqh7ai59hJYdJ2JT0J65PSe7wdxAnx_I.woff2")
