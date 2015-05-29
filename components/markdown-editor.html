@@ -38,133 +38,134 @@
     </div>
   </template>
   <script>
-      Polymer('markdown-editor', {
-      syncScrollSetting:true,
-      renderKaTeX:false,
-      renderKaTeXChanged:function(){
-        this.updatePreview();
-      },
-      markdown:"",
-      useMaruku:false,
-      useMarukuChanged:function(){
-        this.updatePreview();
-      },
+    var editor;
+    Polymer('markdown-editor', {
+    syncScrollSetting:true,
+    renderKaTeX:false,
+    renderKaTeXChanged:function(){
+      this.updatePreview();
+    },
+    markdown:"",
+    useMaruku:false,
+    useMarukuChanged:function(){
+      this.updatePreview();
+    },
 
-      convertMarkdown: function(x){
-        if(this.useMaruku == true){
-          return markdown.toHTML(x,'Maruku');
-        }
-        else {
-          return markdown.toHTML(x);
-        }
-
-      },
-
-      updatePreview:function(){
-        if(this.renderKaTeX == true){
-          this.injectBoundHTML(this.renderLaTeX(this.convertMarkdown(this.markdown)),this.$.preview);
-        }
-        else {
-          this.injectBoundHTML(this.convertMarkdown(this.markdown),this.$.preview);
-
-        }
-
-        cursor = this.$.markdown.selectionStart;
-        n = this.markdown.length;
-        secondLast = this.markdown.slice(n-2,n-1);
-        if (cursor==n && secondLast=="\n"){
-          $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
-          if(this.syncScrollSetting == true){
-            $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
-          };
-        };
-      },
-
-
-      markdownChanged:function(){
-        this.updatePreview();
-      },
-
-      renderLaTeX:function(x){
-        // Useless character that is unlikely to be typed. In practice doesn't seem to matter even if is typed.
-        // Need to escape dollar signs or can't use at all.
-        x = x.replace(/\\\$/g,"Ž");
-
-        lines = x.split("\n");
-        output = "";
-        for(j=0;j<lines.length;j++){
-          lineTemp = "";
-          line = "";
-          splitDisplay = lines[j].split("$$");
-          if(splitDisplay.length>1 && splitDisplay.length%2==1){
-            for(i=0;i<splitDisplay.length;++i){
-              if(i%2==0){
-                lineTemp += splitDisplay[i];
-              }
-              else {
-                try{lineTemp += katex.renderToString(splitDisplay[i],{displayMode:true});}
-                catch(err){lineTemp += "<p style=\"text-align:center;\">ŽŽ" + splitDisplay[i] + 'ŽŽ</p>';}
-              }
-            }
-          }
-          else {
-            lineTemp = lines[j];
-          }
-
-          splitInline = lineTemp.split("$");
-          if(splitInline.length>1 && splitInline.length%2==1){
-            for(k=0;k<splitInline.length;++k){
-              if(k%2==0){
-                line += splitInline[k];
-              }
-              else {
-                try{line += katex.renderToString(splitInline[k]);}
-                catch(err){line += '$' + splitInline[k] + '$';}
-              }
-            }
-          }
-          else {
-            line = lineTemp;
-          }
-
-          output += line;
-        }
-        output = output.replace(/Ž/g,"$");
-        return output;
-      },
-
-      syncScroll:function(){
-        if (this.syncScrollSetting == true){
-          wrapperHeight = this.$.markdown.style.height;
-          innerHeight = this.$.markdown.scrollHeight;
-          previewHeight = this.$.preview.scrollHeight;
-          ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
-          previewPosition = $(this.$.markdown).scrollTop() * ratio;
-          $(this.$.preview).scrollTop(previewPosition);
-        }
-      },
-      markdownFont:function(value){
-        if (value== true){
-          return "Droid Sans Mono";
-        }
-        else {
-          return "Open Sans";
-        }
-      },
-      copyPreview:function(){
-          var copyFrom = $('<textarea/>');
-          copyFrom.text(this.convertMarkdown(editor.markdown));
-          $('body').append(copyFrom);
-          copyFrom.select();
-          document.execCommand('copy');
-          copyFrom.remove();
-          document.querySelector("#toast").show();
-      },
-      ready:function(){
-        editor = this;
-        this.$.preview.addEventListener("click",this.copyPreview.bind(this));
-        this.$.markdown.addEventListener("scroll",this.syncScroll.bind(this));
+    convertMarkdown: function(x){
+      if(this.useMaruku === true){
+        return markdown.toHTML(x,'Maruku');
       }
-    });
+      else {
+        return markdown.toHTML(x);
+      }
+
+    },
+
+    updatePreview: function(){
+      if(this.renderKaTeX === true){
+        this.injectBoundHTML(this.renderLaTeX(this.convertMarkdown(this.markdown)),this.$.preview);
+      }
+      else {
+        this.injectBoundHTML(this.convertMarkdown(this.markdown),this.$.preview);
+
+      }
+
+      var cursor = this.$.markdown.selectionStart;
+      var n = this.markdown.length;
+      var secondLast = this.markdown.slice(n-2,n-1);
+      if (cursor === n && secondLast === "\n"){
+        $(this.$.markdown).scrollTop(this.$.markdown.scrollHeight);
+        if(this.syncScrollSetting === true){
+          $(this.$.preview).scrollTop(this.$.preview.scrollHeight);
+        }
+      }
+    },
+
+
+    markdownChanged: function(){
+      this.updatePreview();
+    },
+
+    renderLaTeX: function(x){
+      // Useless character that is unlikely to be typed. In practice doesn't seem to matter even if is typed.
+      // Need to escape dollar signs or can't use at all.
+      x = x.replace(/\\\$/g,"Ž");
+
+      var lines = x.split("\n");
+      var output = "";
+      for(var j = 0; j < lines.length; j++){
+        var lineTemp = "";
+        var line = "";
+        var splitDisplay = lines[j].split("$$");
+        if(splitDisplay.length > 1 && splitDisplay.length % 2 === 1){
+          for(var i = 0; i < splitDisplay.length; ++i){
+            if(i % 2 === 0){
+              lineTemp += splitDisplay[i];
+            }
+            else {
+              try{lineTemp += katex.renderToString(splitDisplay[i],{displayMode:true});}
+              catch(err){lineTemp += "<p style=\"text-align:center;\">ŽŽ" + splitDisplay[i] + 'ŽŽ</p>';}
+            }
+          }
+        }
+        else {
+          lineTemp = lines[j];
+        }
+
+        var splitInline = lineTemp.split("$");
+        if(splitInline.length > 1 && splitInline.length % 2 === 1){
+          for(var k = 0; k < splitInline.length; ++k){
+            if(k % 2 === 0){
+              line += splitInline[k];
+            }
+            else {
+              try{line += katex.renderToString(splitInline[k]);}
+              catch(err){line += '$' + splitInline[k] + '$';}
+            }
+          }
+        }
+        else {
+          line = lineTemp;
+        }
+
+        output += line;
+      }
+      output = output.replace(/Ž/g,"$");
+      return output;
+    },
+
+    syncScroll: function(){
+      if (this.syncScrollSetting === true){
+        var wrapperHeight = this.$.markdown.style.height;
+        var innerHeight = this.$.markdown.scrollHeight;
+        var previewHeight = this.$.preview.scrollHeight;
+        var ratio = (innerHeight - wrapperHeight)/(previewHeight - wrapperHeight);
+        var previewPosition = $(this.$.markdown).scrollTop() * ratio;
+        $(this.$.preview).scrollTop(previewPosition);
+      }
+    },
+    markdownFont: function(value){
+      if (value=== true){
+        return "Droid Sans Mono";
+      }
+      else {
+        return "Open Sans";
+      }
+    },
+    copyPreview: function(){
+        var copyFrom = $('<textarea/>');
+        copyFrom.text(this.convertMarkdown(editor.markdown));
+        $('body').append(copyFrom);
+        copyFrom.select();
+        document.execCommand('copy');
+        copyFrom.remove();
+        document.querySelector("#toast").show();
+    },
+    ready: function(){
+      editor = this;
+      this.$.preview.addEventListener("click",this.copyPreview.bind(this));
+      this.$.markdown.addEventListener("scroll",this.syncScroll.bind(this));
+    }
+  });
 </script>
 </polymer-element>

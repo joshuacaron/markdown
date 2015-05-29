@@ -1,10 +1,9 @@
 var openDocuments = [];
 var previousDocuments = [];
-var restore = false;
-var settings = {};
 var asTimer = "";
+var app;
 
-newPage = function(){
+var newPage = function(){
   app.pages.push({
     "markdown":"Markdown Overview\n\
 =================\n\
@@ -36,11 +35,11 @@ Happy Writing!",
   }
 }
 
-closeTab = function(){
+var closeTab = function(){
   if(app.pages[app.selected].file){
     removeFromOpenDocuments(app.pages[app.selected].file);
   }
-  if (app.pages.length>1 && app.selected==app.pages.length-1){
+  if (app.pages.length > 1 && app.selected === app.pages.length - 1){
     app.pages.splice(app.selected,1);
     app.selected=app.pages.length-1;
   }
@@ -52,8 +51,8 @@ closeTab = function(){
   }
 }
 
-printFile = function(){
-  console.log("printing");
+var printFile = function(){
+  // append invisible iframe with formatted html to print only that
   var iframe = document.createElement("iframe");
   var doc = markdown.toHTML(app.pages[app.selected].markdown);
   iframe.srcdoc = doc;
@@ -68,33 +67,30 @@ printFile = function(){
   });
 }
 
-errorHandler = function(e){
-  console.log("error");
-  console.log(e);
+var errorHandler = function(e){
+  throw new Error(e);
 }
 
-cycleTabs = function(){
+var cycleTabs = function(){
   if (app.pages.length-app.selected>1){
     app.selected += 1;
   }
-  else if (app.pages.length-app.selected==1 && app.pages.length>1){
+  else if (app.pages.length-app.selected===1 && app.pages.length>1){
     app.selected = 0;
   }
 }
 
-saveAs = function(){
+var saveAs = function(){
   console.log("saving as");
   if(app.pages[app.selected].file){
-    prevDocument = app.pages[app.selected].file;
+    var prevDocument = app.pages[app.selected].file;
   }
     chrome.fileSystem.chooseEntry({type: 'saveFile'}, function(writableFileEntry) {
       app.pages[app.selected].file = writableFileEntry;
     writableFileEntry.createWriter(function(writer) {
-      // console.log("started writing");
       writer.onerror = errorHandler;
       writer.onwriteend = function(e) {
         if (writer.length === 0) {
-            //fileWriter has been reset, write file
             writer.write(new Blob([app.pages[app.selected].markdown], {type: 'text/plain'}));
             app.pages[app.selected].lastSave = app.pages[app.selected].markdown;
             addToOpenDocuments(writableFileEntry);
@@ -102,10 +98,6 @@ saveAs = function(){
               // Removes previous name so doesn't open both
               removeFromOpenDocuments(prevDocument);
             }
-            // console.log(app.pages[app.selected]);
-        } else {
-            //file has been overwritten with blob
-            //use callback or resolve promise
         }
     };
     writer.truncate(0);
@@ -113,32 +105,27 @@ saveAs = function(){
   });
 }
 
-removeFromOpenDocuments = function(x){
-  id = chrome.fileSystem.retainEntry(x);
-  n = openDocuments.indexOf(id);
+var removeFromOpenDocuments = function(x){
+  var id = chrome.fileSystem.retainEntry(x);
+  var n = openDocuments.indexOf(id);
   openDocuments.splice(n,1);
-  // console.log(openDocuments);
   chrome.storage.local.set({'openDocuments': openDocuments}, function() {
-    // Notify that we saved.
-    // console.log('openDocuments saved (remove)');
   });
 }
 
-addToOpenDocuments = function(x){
-  id = chrome.fileSystem.retainEntry(x);
+var addToOpenDocuments = function(x){
+  var id = chrome.fileSystem.retainEntry(x);
   openDocuments.push(id);
-  // console.log(openDocuments);
   chrome.storage.local.set({'openDocuments': openDocuments}, function() {
-    // Notify that we saved.
-    // console.log('openDocuments saved (add)');
   });
 }
 
-restoreOldDocuments = function(){
+var restoreOldDocuments = function(){
+  var restore = false;
   chrome.storage.local.get('openDocuments',function(e){
     if(e.openDocuments){
         previousDocuments = e.openDocuments;
-        for(i=0;i<previousDocuments.length;++i){
+        for(var i = 0; i < previousDocuments.length; ++i){
           chrome.fileSystem.restoreEntry(previousDocuments[i],function(readOnlyEntry){
             openFileHelper(readOnlyEntry,function(){
               restore = true;
@@ -146,7 +133,7 @@ restoreOldDocuments = function(){
           })
         }
         setTimeout(function(){
-          if(restore==false){
+          if(restore===false){
             newPage();
           }
         },500);
@@ -160,20 +147,15 @@ restoreOldDocuments = function(){
   })
 }
 
-saveFile = function(){
+var saveFile = function(){
   if(app.pages[app.selected].file) {
-    writableFileEntry = app.pages[app.selected].file;
+    var writableFileEntry = app.pages[app.selected].file;
     writableFileEntry.createWriter(function(writer) {
       writer.onerror = errorHandler;
     writer.onwriteend = function() {
         if (writer.length === 0) {
-            //fileWriter has been reset, write file
             writer.write(new Blob([app.pages[app.selected].markdown], {type: 'text/plain'}));
             app.pages[app.selected].lastSave = app.pages[app.selected].markdown;
-            // console.log(app.pages[app.selected]);
-        } else {
-            //file has been overwritten with blob
-            //use callback or resolve promise
         }
     };
     writer.truncate(0);
@@ -184,20 +166,15 @@ saveFile = function(){
   }
 }
 
-saveHelper = function(j){
+var saveHelper = function(j){
   if(app.pages[j].file) {
-    writableFileEntry = app.pages[j].file;
+    var writableFileEntry = app.pages[j].file;
     writableFileEntry.createWriter(function(writer) {
       writer.onerror = errorHandler;
     writer.onwriteend = function() {
         if (writer.length === 0) {
-            //fileWriter has been reset, write file
             writer.write(new Blob([app.pages[j].markdown], {type: 'text/plain'}));
             app.pages[j].lastSave = app.pages[j].markdown;
-            // console.log(app.pages[app.selected]);
-        } else {
-            //file has been overwritten with blob
-            //use callback or resolve promise
         }
     };
     writer.truncate(0);
@@ -205,27 +182,23 @@ saveHelper = function(j){
   }
 }
 
-openFile = function(){
-  var chosenFileEntry = null;
+var openFile = function(){
   chrome.fileSystem.chooseEntry({type: 'openWritableFile'}, function(readOnlyEntry) {
     openFileHelper(readOnlyEntry);
 	});
 }
 
-openFileHelper = function(fileEntry,whenDone){
-  // console.log("opening file " + fileEntry);
-
+var openFileHelper = function(fileEntry,whenDone){
   fileEntry.file(function(file) {
     var reader = new FileReader();
 
     reader.onerror = errorHandler;
     reader.onloadend = function(e) {
-      // console.log("finished opening file");
       app.pages.push({"markdown": e.target.result, "lastSave":e.target.result});
       app.selected = app.pages.length - 1;
       app.pages[app.selected].file = fileEntry;
       addToOpenDocuments(fileEntry);
-      if(whenDone && (typeof whenDone == 'function')){
+      if(whenDone && (typeof whenDone === 'function')){
         whenDone();
       }
     };
@@ -234,7 +207,7 @@ openFileHelper = function(fileEntry,whenDone){
   });
 }
 
-loadSettings = function(){
+var loadSettings = function(){
   var defaultSettings = {
         syncedScrolling : true,
         alwaysOnTop: false,
@@ -243,7 +216,6 @@ loadSettings = function(){
         autosaveEnabled : false,
         autosaveInterval : "5",
         renderLaTeX: false,
-        // debounce: false,
         useMaruku: false
   }
 
@@ -264,22 +236,22 @@ loadSettings = function(){
   });
 }
 
-saveSettings = function(){
+var saveSettings = function(){
   chrome.storage.local.set({'settings':app.settings},function(){
     
   });
 }
 
 
-openSettings = function(){
-  settingsOpen = false;
-  for(i=0;i<app.pages.length;++i){
-    if(app.pages[i].settings==true){
+var openSettings = function(){
+  var settingsOpen = false;
+  for(var i = 0; i < app.pages.length; ++i){
+    if(app.pages[i].settings === true){
       app.selected = i;
       settingsOpen = true;
     }
   }
-  if(settingsOpen==false){
+  if(settingsOpen === false){
     app.pages.push({
       "settings":true
     })
@@ -288,12 +260,12 @@ openSettings = function(){
 
 }
 
-autosave = function(){
-  if(app.settings.autosaveEnabled == true){
+var autosave = function(){
+  if(app.settings.autosaveEnabled === true){
     asTimer = setInterval(function(){
       console.log("autosaving");
 
-      for(i=0;i<app.pages.length;++i){
+      for(var i = 0; i < app.pages.length; ++i){
         if(app.pages[i].file){
           saveHelper(i);
         }
@@ -314,15 +286,15 @@ document.addEventListener('DOMContentLoaded', function(){
   loadSettings();
 
   app.makeTitle = function(markdown,file,lastSave,page){
-    path = "";
+    var path = "";
     if(page.file){
       path=page.file.name;
     }
 
-    if(path!="" && page.lastSave==page.markdown){
+    if(path !== "" && page.lastSave === page.markdown){
       return path;
     }
-    else if(path!=""){
+    else if(path !== ""){
       return "<em>" + path + "*</em>";
     }
     else{
@@ -330,9 +302,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }
 
-  var cw = document.getElementById("closeWindow");;
+  var cw = document.getElementById("closeWindow");
   cw.addEventListener("click",function(){
-    // chrome.app.window.current().close;
     window.close();
   })
 
@@ -342,9 +313,9 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
     var dnd = new DnDFileController('body', function(data) {
-      for (i=0;i<data.items.length;++i){
-        item = data.items[i];
-        if (item.kind == 'file' && item.webkitGetAsEntry()) {
+      for (var i=0;i<data.items.length;++i){
+        var item = data.items[i];
+        if (item.kind === 'file' && item.webkitGetAsEntry()) {
           var draggedEntry = data.items[i].webkitGetAsEntry();
           chrome.fileSystem.getWritableEntry(draggedEntry,function(writableEntry){
             openFileHelper(writableEntry);
@@ -364,10 +335,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
     $(window).bind('keydown', function(event) {
     if (event.ctrlKey || event.metaKey) {
-      if (event.shiftKey && String.fromCharCode(event.which).toLowerCase() =='s'){
+      if (event.shiftKey && String.fromCharCode(event.which).toLowerCase() === 's'){ // Ctrl + Shift + s
         saveAs();
       }
-      if (event.which==9){// Ctrl + Tab
+      if (event.which === 9){// Ctrl + Tab
         event.preventDefault();
         cycleTabs();
       }
@@ -405,6 +376,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
+  // Link context menus to functions
   chrome.contextMenus.onClicked.addListener(function(itemData) {
     switch (itemData.menuItemId){
       case 'context-settings':

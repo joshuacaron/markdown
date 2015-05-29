@@ -1,41 +1,24 @@
 gulp = require 'gulp'
-# coffee = require 'gulp-coffee'
-# sass = require 'gulp-sass'
 plumber = require 'gulp-plumber'
 uglify = require 'gulp-uglify'
 minifyCSS = require 'gulp-minify-css'
 gutil = require 'gulp-util'
-# jade = require 'gulp-jade'
 vulcanize = require 'gulp-vulcanize'
 autoprefixer = require 'gulp-autoprefixer'
-# del = require 'del'
-# runSequence = require 'gulp-run-sequence'
 
 paths =
-  # js: "scripts/*.js"
   css: "css/*.css"
   assets: "assets/*"
-  # jade: "jade/*.jade"
 
 onError = (error) ->
   gutil.beep()
   console.log error
 
 
-# gulp.task 'js', ->
-#   gulp.src paths.js
-#     .pipe plumber
-#       errorHandler: onError
-#     # .pipe coffee
-#     #   bare:true
-#     .pipe uglify()
-#     .pipe gulp.dest 'release/scripts'
-
 gulp.task 'css', ->
   gulp.src paths.css
     .pipe plumber
       errorHandler: onError
-    # .pipe sass()
     .pipe autoprefixer()
     .pipe minifyCSS()
     .pipe gulp.dest 'release/css'
@@ -63,7 +46,6 @@ gulp.task 'html', ->
   gulp.src "index.html"
     .pipe plumber
       errorHandler: onError
-    # .pipe jade()
     .pipe vulcanize
       dest: 'release'
       strip: true,

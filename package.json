@@ -1,0 +1,30 @@
+{
+  "name": "markdown",
+  "version": "0.2.0",
+  "description": "Markdown ========",
+  "main": "background.js",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.3.0",
+    "gulp-minify-css": "^1.1.1",
+    "gulp-plumber": "^1.0.1",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "gulp-vulcanize": "^5.0.0",
+    "markdown": "^0.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshuacaron/markdown.git"
+  },
+  "author": "Joshua Caron <joshua@joshuacaron.ca>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshuacaron/markdown/issues"
+  },
+  "homepage": "https://github.com/joshuacaron/markdown"
+}

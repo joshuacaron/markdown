@@ -4,9 +4,11 @@ chrome.app.runtime.onLaunched.addListener(function() {
       'width': 1000,
       'height': 650
     },
-    frame: { type: "none" }
+    frame: { type: "none" } // Make own close buttons, etc.
   });
 
+
+// Menu when right click on header
   chrome.contextMenus.create({
     title: "New",
     id: "context-new"
@@ -38,12 +40,3 @@ chrome.app.runtime.onLaunched.addListener(function() {
 
 
 });
-// chrome.runtime.onInstalled.addListener(function() {
-//   chrome.contextMenus.create({
-//   	title: "Settings",
-//   	id: "context-settings",
-//     contexts: ["all"]
-//   })
-
-
-// });

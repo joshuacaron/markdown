@@ -1,20 +1,3 @@
-<!--polymer-element name="html-tab" attributes="htmltitle" extends="paper-tab">
-  <template>
-    <shadow></shadow>
-  </template>
-
-  <script>
-    Polymer('html-tab', {
-      htmltitle:"",
-      htmltitleChanged:function(x,y){
-        this.injectBoundHTML(this.htmltitle,this.$.shadow);
-      }
-    });
-  </script>
-</polymer-element-->
-
-
-
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 
 <polymer-element name="html-tab" attributes="noink htmltitle" role="tab" inline flex center-center horizontal layout>
@@ -29,16 +12,8 @@
 <script>
 
   Polymer('html-tab', {
-    
-    /**
-     * If true, ink ripple effect is disabled.
-     *
-     * @attribute noink
-     * @type boolean
-     * @default false
-     */
-    htmltitle:"",
-    htmltitleChanged:function(x,y){
+    htmltitle: "",
+    htmltitleChanged: function(x,y){
       this.injectBoundHTML(this.htmltitle,this.$.tab);
     },
     noink: false,
