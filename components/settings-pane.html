@@ -97,6 +97,10 @@
         <span flex>Use Maruku markdown syntax (instead of Gruber)</span>
         <paper-toggle-button checked="{{settings.useMaruku}}"></paper-toggle-button>
       </core-label>
+      <core-label for layout horizontal>
+        <span flex>Highlight syntax in code blocks</span>
+        <paper-toggle-button checked="{{settings.highlightSyntax}}"></paper-toggle-button>
+      </core-label>
     </div>
   </template>
   <script>
@@ -109,7 +113,8 @@
           'settings.monospaceFont' : 'settingsUpdated',
           'settings.autosaveEnabled' : 'autosaveUpdated',
           'settings.autosaveInterval' : 'autosaveUpdated',
-          'settings.renderLaTeX' : 'settingsUpdated'
+          'settings.renderLaTeX' : 'settingsUpdated',
+          'settings.highlightSyntax' : 'settingsUpdated'
         },
         settingsUpdated:function(){
           this.fire("settings-changed",{msg:"settinsg changed"});

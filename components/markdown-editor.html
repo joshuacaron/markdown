@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX useMaruku">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX useMaruku highlightSyntax">
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
     <link href="../css/github.css" rel="stylesheet" type="text/css">
@@ -51,6 +51,10 @@
     },
     markdown:"",
     useMaruku:false,
+    highlightSyntax:false,
+    highlightSyntaxChanged:function(){
+      this.updatePreview();
+    },
     useMarukuChanged:function(){
       this.updatePreview();
     },
@@ -65,7 +69,7 @@
 
     },
 
-    highlightSyntax: function(html) {
+    highlightCode: function(html) {
       // Split <pre><code> tags and highlight any code.
       var parsedHtml = splitHtml(html, 'pre')
       for (var i = 1; i < parsedHtml.length; i += 2) {
@@ -78,10 +82,14 @@
 
 
     updatePreview: function() {
-      if (this.renderKaTeX === true) {
+      if (this.renderKaTeX === true && this.highlightSyntax === true) {
+        this.injectBoundHTML(this.highlightCode(this.renderLaTeX(this.convertMarkdown(this.markdown))), this.$.preview);
+      } else if (this.renderKaTeX === true) {
         this.injectBoundHTML(this.renderLaTeX(this.convertMarkdown(this.markdown)), this.$.preview);
+      } else if (this.highlightSyntax === true) {
+        this.injectBoundHTML(this.highlightCode(this.convertMarkdown(this.markdown)), this.$.preview);
       } else {
-        this.injectBoundHTML(this.highlightSyntax(this.convertMarkdown(this.markdown)), this.$.preview);
+        this.injectBoundHTML(this.convertMarkdown(this.markdown), this.$.preview);
       }
 
       var cursor = this.$.markdown.selectionStart;
@@ -110,6 +118,11 @@
       for(var j = 0; j < lines.length; j++){
         var lineTemp = "";
         var line = "";
+
+        if (j < lines.length - 1) {
+          lines[j] = lines[j] + "\n"
+        }
+
         var splitDisplay = lines[j].split("$$");
         if(splitDisplay.length > 1 && splitDisplay.length % 2 === 1){
           for(var i = 0; i < splitDisplay.length; ++i){
