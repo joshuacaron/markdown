@@ -1,8 +1,12 @@
 <polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX useMaruku">
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/github.css" rel="stylesheet" type="text/css">
     <script src="katex.min.js"></script>
     <script src="../scripts/underscore-min.js"></script>
+    <script src="../scripts/highlight.pack.js"></script>
+    <script src="../scripts/jquery.min.js"></script>
+    <script src="../scripts/splithtml.js"></script>
     <style>
       #preview {
         padding: 0 15px;
@@ -61,13 +65,23 @@
 
     },
 
-    updatePreview: function(){
-      if(this.renderKaTeX === true){
-        this.injectBoundHTML(this.renderLaTeX(this.convertMarkdown(this.markdown)),this.$.preview);
+    highlightSyntax: function(html) {
+      // Split <pre><code> tags and highlight any code.
+      var parsedHtml = splitHtml(html, 'pre')
+      for (var i = 1; i < parsedHtml.length; i += 2) {
+        var code = parsedHtml[i].slice(11, -13);
+        parsedHtml[i] = '<pre><code>' + hljs.highlightAuto(code).value + '</code></pre>';
       }
-      else {
-        this.injectBoundHTML(this.convertMarkdown(this.markdown),this.$.preview);
+      parsedHtml = parsedHtml.join('')
+      return parsedHtml
+    },
 
+
+    updatePreview: function() {
+      if (this.renderKaTeX === true) {
+        this.injectBoundHTML(this.renderLaTeX(this.convertMarkdown(this.markdown)), this.$.preview);
+      } else {
+        this.injectBoundHTML(this.highlightSyntax(this.convertMarkdown(this.markdown)), this.$.preview);
       }
 
       var cursor = this.$.markdown.selectionStart;
