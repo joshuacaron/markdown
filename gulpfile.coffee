@@ -53,11 +53,4 @@ gulp.task 'html', ->
       csp: true
     .pipe gulp.dest 'release'
 
-gulp.task 'watch', ->
-  gulp.watch paths.css, ['css']
-  gulp.watch "index.html", ['html']
-  gulp.watch paths.assets, ['assets']
-  gulp.watch "background.js", ['background']
-  gulp.watch "manifest.json", ["manifest"]
-
-gulp.task 'default', ['watch','css','html','assets','background','manifest']
+gulp.task 'default', ['css', 'assets', 'manifest', 'background', 'html']
