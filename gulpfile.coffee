@@ -5,6 +5,8 @@ minifyCSS = require 'gulp-minify-css'
 gutil = require 'gulp-util'
 vulcanize = require 'gulp-vulcanize'
 autoprefixer = require 'gulp-autoprefixer'
+browserify = require 'browserify'
+source = require 'vinyl-source-stream'
 
 paths =
   css: "css/*.css"
@@ -14,6 +16,11 @@ onError = (error) ->
   gutil.beep()
   console.log error
 
+gulp.task 'browserify', ->
+  browserify 'components/markdown-editor.js'
+    .bundle()
+    .pipe source 'markdown-editor-bundled.js'
+    .pipe gulp.dest 'components'
 
 gulp.task 'css', ->
   gulp.src paths.css
@@ -42,7 +49,7 @@ gulp.task 'manifest', ->
       errorHandler: onError
     .pipe gulp.dest 'release'
 
-gulp.task 'html', ->
+gulp.task 'html', ['browserify'], ->
   gulp.src "index.html"
     .pipe plumber
       errorHandler: onError
