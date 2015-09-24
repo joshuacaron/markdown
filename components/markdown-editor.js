@@ -1,6 +1,7 @@
 var editor;
 var katex = require('parse-katex');
 var hljs = require('highlight.js');
+var css = require('css');
 
 Polymer('markdown-editor', {
   syncScrollSetting: true,
@@ -11,6 +12,11 @@ Polymer('markdown-editor', {
   markdown: '',
   useMaruku: false,
   highlightSyntax: false,
+  customCSS: '',
+
+  customCSSChanged: function() {
+    this.parseCSS(this.customCSS);
+  },
 
   highlightSyntaxChanged: function() {
     this.updatePreview();
@@ -82,6 +88,24 @@ Polymer('markdown-editor', {
       return 'Open Sans';
     }
   },
+
+  parseCSS: function(originalCSS) {
+    // Parse the css and make the selectors apply only to the preview pane
+    var parsedCSS = css.parse(originalCSS);
+    var rules = parsedCSS.stylesheet.rules;
+    for (var i = 0; i < rules.length; ++i) {
+      var sel = rules[i].selectors;
+      for (var j = 0; j < sel.length; ++j) {
+        sel[j] = '#preview ' + sel[j]
+      }
+      rules[i].selectors = sel;
+    }
+    parsedCSS.stylesheet.rules = rules;
+    var newCSS = css.stringify(parsedCSS);
+    // Inject the css into the page
+    this.injectBoundHTML(newCSS, this.$.customStyle)
+  },
+
   copyPreview: function() {
     var copyFrom = $('<textarea/>');
     copyFrom.text(this.convertMarkdown(editor.markdown));

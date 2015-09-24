@@ -1,4 +1,4 @@
-<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX useMaruku highlightSyntax">
+<polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX useMaruku highlightSyntax customCSS">
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
     <link href="../css/github.css" rel="stylesheet" type="text/css">
@@ -34,6 +34,7 @@
         width:100%;
       }
     </style>
+    <style id="customStyle"></style>
     <div id="wrapper" layout horizontal flex>
       <textarea id="markdown" value="{{markdown}}" autofocus flex></textarea>
       <div id="preview" flex></div>
