@@ -91,7 +91,7 @@ Polymer('markdown-editor', {
 
   parseCSS: function(originalCSS) {
     // Parse the css and make the selectors apply only to the preview pane
-    var parsedCSS = css.parse(originalCSS);
+    var parsedCSS = css.parse(originalCSS, {silent: true});
     var rules = parsedCSS.stylesheet.rules;
     for (var i = 0; i < rules.length; ++i) {
       var sel = rules[i].selectors;
