@@ -47,6 +47,10 @@
         background-color: #F50057;
       }
 
+      paper-input-decorator /deep/ .focused-underline {
+        background-color: #F50057;
+      }
+
 
       paper-slider::shadow #sliderBar::shadow #activeProgress {
         background-color: #F50057;
@@ -101,6 +105,12 @@
         <span flex>Highlight syntax in code blocks</span>
         <paper-toggle-button checked="{{settings.highlightSyntax}}"></paper-toggle-button>
       </core-label>
+      <core-label for layout horizontal>
+        <span>Custom CSS<br>(use at your own risk)</span>
+        <paper-input-decorator flex style="margin-left: 20px; margin-top: -1em;" label="Custom CSS">
+            <textarea id="customCSS" value="{{settings.customCSS}}" rows=5></textarea>
+        </paper-input-decorator>
+      </core-label>
     </div>
   </template>
   <script>
@@ -114,7 +124,8 @@
           'settings.autosaveEnabled' : 'autosaveUpdated',
           'settings.autosaveInterval' : 'autosaveUpdated',
           'settings.renderLaTeX' : 'settingsUpdated',
-          'settings.highlightSyntax' : 'settingsUpdated'
+          'settings.highlightSyntax' : 'settingsUpdated',
+          'settings.customCSS' : 'settingsUpdated'
         },
         settingsUpdated:function(){
           this.fire("settings-changed",{msg:"settinsg changed"});
@@ -126,6 +137,26 @@
         autosaveUpdated:function(){
           this.fire("autosave-update",{msg:"autosave updated"});
           this.settingsUpdated();
+        },
+
+        ready: function(){
+
+          this.$.customCSS.addEventListener("keydown", function(e) {
+            var keyCode = e.keyCode || e.which;
+
+            if (keyCode === 9) {
+              e.preventDefault();
+              var start = $(this).get(0).selectionStart;
+              var end = $(this).get(0).selectionEnd;
+
+              // set textarea value to: text before caret + tab + text after caret
+              $(this).val($(this).val().substring(0, start) + "    " + $(this).val().substring(end));
+
+              // put caret at right position again
+              $(this).get(0).selectionStart =
+              $(this).get(0).selectionEnd = start + 4;
+            }
+          });
         }
     });
 </script>

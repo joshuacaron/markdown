@@ -1,9 +1,10 @@
 {
   "name": "markdown",
   "version": "0.2.1",
-  "description": "Markdown ========",
+  "description": "A simple, beautiful Markdown Editor using Material Design.",
   "main": "background.js",
   "dependencies": {
+    "css": "^2.2.1",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.3.0",
     "gulp-minify-css": "^1.1.1",
@@ -11,7 +12,8 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
     "gulp-vulcanize": "^5.0.0",
-    "markdown": "^0.5.0"
+    "markdown": "^0.5.0",
+    "parse-katex": "^0.2.0"
   },
   "devDependencies": {},
   "scripts": {
