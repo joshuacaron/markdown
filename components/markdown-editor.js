@@ -51,7 +51,7 @@ Polymer('markdown-editor', {
     var parsedHtml = splitHtml(html, 'pre')
     for (var i = 1; i < parsedHtml.length; i += 2) {
       var code = parsedHtml[i].slice(11, -13);
-      parsedHtml[i] = '<pre><code class="hljs">' + hljs.highlightAuto(code).value + '</code></pre>';
+      parsedHtml[i] = '<pre><code class="hljs">' + hljs.highlightAuto(code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')).value + '</code></pre>';
     }
     parsedHtml = parsedHtml.join('')
     return parsedHtml
