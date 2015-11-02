@@ -82,5 +82,5 @@ module.exports = function() {
 
   var code = 'var themes = \'' + output + '\''
 
-  fs.writeFileSync('themes.js', code)
+  fs.writeFileSync('scripts/themes.js', code)
 }
