@@ -209,14 +209,15 @@ var openFileHelper = function(fileEntry,whenDone){
 
 var loadSettings = function(){
   var defaultSettings = {
-        syncedScrolling : true,
-        alwaysOnTop: false,
-        fontSize: "16px",
-        monospaceFont : false,
-        autosaveEnabled : false,
-        autosaveInterval : "5",
-        renderLaTeX: false,
-        useMaruku: false
+    syncedScrolling : true,
+    alwaysOnTop: false,
+    fontSize: "16px",
+    monospaceFont : false,
+    autosaveEnabled : false,
+    autosaveInterval : "5",
+    renderLaTeX: false,
+    useMaruku: false,
+    highlightingTheme: "33"
   }
 
   chrome.storage.local.get('settings',function(e){

@@ -118,7 +118,7 @@
 
         <paper-dropdown-menu label="Syntax Highlighting Theme">
           <paper-dropdown class="dropdown">
-            <core-menu class="menu" selected="0">
+            <core-menu class="menu" selected="{{settings.highlightingTheme}}">
               <template repeat="{{themes}}">
                 <paper-item>{{}}</paper-item>
               </template>
@@ -148,10 +148,11 @@
           'settings.autosaveInterval' : 'autosaveUpdated',
           'settings.renderLaTeX' : 'settingsUpdated',
           'settings.highlightSyntax' : 'settingsUpdated',
-          'settings.customCSS' : 'settingsUpdated'
+          'settings.customCSS' : 'settingsUpdated',
+          'settings.highlightingTheme': 'settingsUpdated'
         },
         settingsUpdated:function(){
-          this.fire("settings-changed",{msg:"settinsg changed"});
+          this.fire("settings-changed",{msg:"settings changed"});
         },
         onTopSettingUpdated:function(o,n){
           chrome.app.window.current().setAlwaysOnTop(n);
@@ -162,8 +163,71 @@
           this.settingsUpdated();
         },
         themes: [
-          'GitHub',
-          'Monokai'
+          "agate",
+          "androidstudio",
+          "arta",
+          "ascetic",
+          "atelier-cave",
+          "atelier-cave",
+          "atelier-dune",
+          "atelier-dune",
+          "atelier-estuary",
+          "atelier-estuary",
+          "atelier-forest",
+          "atelier-forest",
+          "atelier-heath",
+          "atelier-heath",
+          "atelier-lakeside",
+          "atelier-lakeside",
+          "atelier-plateau",
+          "atelier-plateau",
+          "atelier-savanna",
+          "atelier-savanna",
+          "atelier-seaside",
+          "atelier-seaside",
+          "atelier-sulphurpool",
+          "atelier-sulphurpool",
+          "brown_paper",
+          "codepen-embed",
+          "color-brewer",
+          "dark",
+          "darkula",
+          "default",
+          "docco",
+          "far",
+          "foundation",
+          "github",
+          "github-gist",
+          "googlecode",
+          "grayscale",
+          "hopscotch",
+          "hybrid",
+          "idea",
+          "ir_black",
+          "kimbie",
+          "kimbie",
+          "magula",
+          "mono-blue",
+          "monokai",
+          "monokai_sublime",
+          "obsidian",
+          "paraiso",
+          "paraiso",
+          "pojoaque",
+          "railscasts",
+          "rainbow",
+          "school_book",
+          "solarized_dark",
+          "solarized_light",
+          "sunburst",
+          "tomorrow",
+          "tomorrow-night-blue",
+          "tomorrow-night-bright",
+          "tomorrow-night",
+          "tomorrow-night-eighties",
+          "vs",
+          "xcode",
+          "zenburn",
         ],
 
         ready: function(){

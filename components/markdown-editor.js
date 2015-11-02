@@ -2,6 +2,7 @@ var editor;
 var katex = require('parse-katex');
 var hljs = require('highlight.js');
 var css = require('css');
+var loadTheme = require('./theme-loader.js')
 
 Polymer('markdown-editor', {
   syncScrollSetting: true,
@@ -13,6 +14,7 @@ Polymer('markdown-editor', {
   useMaruku: false,
   highlightSyntax: false,
   customCSS: '',
+  theme: '',
 
   customCSSChanged: function() {
     this.parseCSS(this.customCSS);
@@ -20,6 +22,7 @@ Polymer('markdown-editor', {
 
   highlightSyntaxChanged: function() {
     this.updatePreview();
+    this.theme = loadTheme('github')
   },
 
   useMarukuChanged: function() {
@@ -136,6 +139,5 @@ Polymer('markdown-editor', {
         $(this).get(0).selectionEnd = start + 4;
       }
     });
-
   }
 });

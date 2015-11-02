@@ -1,9 +1,9 @@
 <polymer-element name="markdown-editor" layout vertical attributes="markdown syncScrollSetting fontSize monospaceFont renderKaTeX useMaruku highlightSyntax customCSS">
   <template>
     <link href="katex.min.css" rel="stylesheet" type="text/css">
-    <link href="../css/github.css" rel="stylesheet" type="text/css">
     <script src="../scripts/jquery.min.js"></script>
     <script src="../node_modules/split-html/index.js"></script>
+    <style id="themeLoader">{{theme}}</style>
 
     <style>
       #preview {
