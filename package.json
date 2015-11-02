@@ -1,6 +1,6 @@
 {
   "name": "markdown",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "A simple, beautiful Markdown Editor using Material Design.",
   "main": "background.js",
   "dependencies": {

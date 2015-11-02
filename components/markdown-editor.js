@@ -46,24 +46,24 @@ Polymer('markdown-editor', {
     }
   },
 
-  highlightCode: function(html) {
+  parseCode: function(html, pk, sh) {
     // Split <pre><code> tags and highlight any code.
     var parsedHtml = splitHtml(html, 'pre')
-    for (var i = 1; i < parsedHtml.length; i += 2) {
-      var code = parsedHtml[i].slice(11, -13);
-      parsedHtml[i] = '<pre><code class="hljs">' + hljs.highlightAuto(code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')).value + '</code></pre>';
+    for (var i = 0; i < parsedHtml.length; i += 1) {
+      if (i % 2 === 0 && pk) {
+        parsedHtml[i] = katex.renderLaTeX(parsedHtml[i])
+      } else if (i % 2 === 1 && sh) {
+        var code = parsedHtml[i].slice(11, -13);
+        parsedHtml[i] = '<pre><code class="hljs">' + hljs.highlightAuto(code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')).value + '</code></pre>';
+      }
     }
     parsedHtml = parsedHtml.join('')
     return parsedHtml
   },
 
   updatePreview: function() {
-    if (this.renderKaTeX === true && this.highlightSyntax === true) {
-      this.injectBoundHTML(this.highlightCode(katex.renderLaTeX(this.convertMarkdown(this.markdown))), this.$.preview);
-    } else if (this.renderKaTeX === true) {
-      this.injectBoundHTML(katex.renderLaTeX(this.convertMarkdown(this.markdown)), this.$.preview);
-    } else if (this.highlightSyntax === true) {
-      this.injectBoundHTML(this.highlightCode(this.convertMarkdown(this.markdown)), this.$.preview);
+    if (this.renderKaTeX === true || this.highlightSyntax === true) {
+      this.injectBoundHTML(this.parseCode(this.convertMarkdown(this.markdown), this.renderKaTeX, this.highlightSyntax), this.$.preview);
     } else {
       this.injectBoundHTML(this.convertMarkdown(this.markdown), this.$.preview);
     }
