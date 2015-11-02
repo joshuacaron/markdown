@@ -217,7 +217,7 @@ var loadSettings = function(){
     autosaveInterval : "5",
     renderLaTeX: false,
     useMaruku: false,
-    highlightingTheme: "33"
+    highlightingTheme: "44"
   }
 
   chrome.storage.local.get('settings',function(e){
