@@ -4,22 +4,22 @@
  
       @media (max-width:649px){
         #settingsWrapper {
-          width:95vw !important;
+          width: 95vw !important;
         }
       }
 
       #settingsWrapper {
-        width:650px;
-        padding:30px 0px;
-        font-size:16px;
-        font-family:"Open Sans";
-        margin:0 auto;
+        font-family: "Open Sans";
+        font-size: 16px;
+        margin: 0 auto;
+        padding: 30px 0px;
+        width: 650px;
       }
 
       #settingsOverview {
-        padding:15px 30px 30px;
-        border-bottom:solid 1px #e0e0e0;
-        font-size:16px;
+        border-bottom: solid 1px #e0e0e0;
+        font-size: 16px;
+        padding: 15px 30px 30px;
         text-align: center;
       }
 
@@ -51,7 +51,14 @@
         background-color: #F50057;
       }
 
+      paper-slider::shadow paper-input /deep/ .focused-underline {
+        background-color: #F50057;
+      }
 
+      paper-slider::shadow paper-input-decorator /deep/ .focused-underline {
+        background-color: #F50057;
+      }
+      
       paper-slider::shadow #sliderBar::shadow #activeProgress {
         background-color: #F50057;
       }
