@@ -3,6 +3,8 @@
 <head>
 <link href="css/main.css" rel="stylesheet" type="text/css">
 
+<script src="scripts/themes.js"></script>
+
 <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
 
 <link rel="import" href="bower_components/polymer/polymer.html">
@@ -32,7 +34,6 @@
 <script src="scripts/jquery.min.js"></script>
 <script src="scripts/main.js"></script>
 <script src="node_modules/underscore/underscore-min.js"></script>
-
 </head>
 
 
@@ -67,7 +68,7 @@
 
 			<template if="{{!page.settings}}">
 				<section>
-					<markdown-editor cross-fade markdown="{{page.markdown}}" syncScrollSetting="{{settings.syncedScrolling}}" fontSize="{{settings.fontSize}}" monospaceFont="{{settings.monospaceFont}}" renderKaTeX="{{settings.renderLaTeX}}" debounce="{{settings.debounce}}" useMaruku="{{settings.useMaruku}}" highlightSyntax="{{settings.highlightSyntax}}" customCSS="{{settings.customCSS}}"></markdown-editor>
+					<markdown-editor cross-fade markdown="{{page.markdown}}" syncScrollSetting="{{settings.syncedScrolling}}" fontSize="{{settings.fontSize}}" monospaceFont="{{settings.monospaceFont}}" renderKaTeX="{{settings.renderLaTeX}}" debounce="{{settings.debounce}}" useMaruku="{{settings.useMaruku}}" highlightSyntax="{{settings.highlightSyntax}}" customCSS="{{settings.customCSS}}" themeNumber="{{settings.highlightingTheme}}"></markdown-editor>
 				</section>
 			</template>
 		</template>

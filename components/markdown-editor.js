@@ -2,7 +2,6 @@ var editor;
 var katex = require('parse-katex');
 var hljs = require('highlight.js');
 var css = require('css');
-var loadTheme = require('./theme-loader.js')
 
 Polymer('markdown-editor', {
   syncScrollSetting: true,
@@ -15,14 +14,24 @@ Polymer('markdown-editor', {
   highlightSyntax: false,
   customCSS: '',
   theme: '',
+  themes: JSON.parse(themes),
+  themeNumber: 0,
 
   customCSSChanged: function() {
     this.parseCSS(this.customCSS);
   },
 
   highlightSyntaxChanged: function() {
+    this.updateHighlighting()
+  },
+
+  themeNumberChanged: function(){
+    this.updateHighlighting()
+  },
+
+  updateHighlighting: function() {
     this.updatePreview();
-    this.theme = loadTheme('github')
+    this.theme = this.themes[Object.keys(this.themes)[parseInt(this.themeNumber)]]
   },
 
   useMarukuChanged: function() {
@@ -42,7 +51,7 @@ Polymer('markdown-editor', {
     var parsedHtml = splitHtml(html, 'pre')
     for (var i = 1; i < parsedHtml.length; i += 2) {
       var code = parsedHtml[i].slice(11, -13);
-      parsedHtml[i] = '<pre><code>' + hljs.highlightAuto(code).value + '</code></pre>';
+      parsedHtml[i] = '<pre><code class="hljs">' + hljs.highlightAuto(code).value + '</code></pre>';
     }
     parsedHtml = parsedHtml.join('')
     return parsedHtml

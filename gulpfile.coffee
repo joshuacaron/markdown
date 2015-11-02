@@ -1,12 +1,13 @@
-gulp = require 'gulp'
-plumber = require 'gulp-plumber'
-uglify = require 'gulp-uglify'
-minifyCSS = require 'gulp-minify-css'
-gutil = require 'gulp-util'
-vulcanize = require 'gulp-vulcanize'
 autoprefixer = require 'gulp-autoprefixer'
 browserify = require 'browserify'
+gulp = require 'gulp'
+gutil = require 'gulp-util'
+minifyCSS = require 'gulp-minify-css'
+plumber = require 'gulp-plumber'
 source = require 'vinyl-source-stream'
+uglify = require 'gulp-uglify'
+vulcanize = require 'gulp-vulcanize'
+generateThemes = require './scripts/generate-themes-file.js'
 
 paths =
   css: "css/*.css"
@@ -49,12 +50,15 @@ gulp.task 'manifest', ->
       errorHandler: onError
     .pipe gulp.dest 'release'
 
-gulp.task 'html', ['browserify'], ->
+gulp.task 'generate-themes', ->
+  generateThemes()
+
+gulp.task 'html', ['browserify', 'generate-themes'], ->
   gulp.src "index.html"
     .pipe plumber
       errorHandler: onError
     .pipe vulcanize
-      dest: 'release'
+      dest: 'release',
       strip: true,
       inline: true,
       csp: true
