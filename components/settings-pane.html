@@ -74,6 +74,26 @@
     
     <p id="settingsOverview">Any settings you change are automatically saved. Feel free to close the tab with <i>Ctrl+w</i> after you are done.</p>
     <div id="settingsWrapper" cross-fade flex layout vertical>
+      <core-label for layout horizontal>
+        <span flex>Highlight syntax in code blocks</span>
+        <paper-toggle-button checked="{{settings.highlightSyntax}}"></paper-toggle-button>
+      </core-label>
+
+      <core-label for layout horizontal>
+        <span flex>Syntax highlighting theme</span>
+
+        <paper-dropdown-menu label="Syntax Highlighting Theme">
+          <paper-dropdown class="dropdown">
+            <core-menu class="menu" selected="{{settings.highlightingTheme}}">
+              <template repeat="{{themes}}">
+                <paper-item>{{}}</paper-item>
+              </template>
+            </core-menu>
+          </paper-dropdown>
+        </paper-dropdown-menu>
+
+      </core-label>
+
       <core-label for layout horizontal wrap>
         <span flex>Synchronize scrolling between panels</span>
         <paper-toggle-button checked="{{settings.syncedScrolling}}"></paper-toggle-button>
@@ -108,26 +128,6 @@
         <span flex>Use Maruku markdown syntax (instead of Gruber)</span>
         <paper-toggle-button checked="{{settings.useMaruku}}"></paper-toggle-button>
       </core-label>
-      <core-label for layout horizontal>
-        <span flex>Highlight syntax in code blocks</span>
-        <paper-toggle-button checked="{{settings.highlightSyntax}}"></paper-toggle-button>
-      </core-label>
-
-      <core-label for layout horizontal>
-        <span flex>Syntax highlighting theme</span>
-
-        <paper-dropdown-menu label="Syntax Highlighting Theme">
-          <paper-dropdown class="dropdown">
-            <core-menu class="menu" selected="{{settings.highlightingTheme}}">
-              <template repeat="{{themes}}">
-                <paper-item>{{}}</paper-item>
-              </template>
-            </core-menu>
-          </paper-dropdown>
-        </paper-dropdown-menu>
-
-      </core-label>
-
       <core-label for layout horizontal>
         <span>Custom CSS<br>(use at your own risk)</span>
         <paper-input-decorator flex style="margin-left: 20px; margin-top: -1em;" label="Custom CSS">
