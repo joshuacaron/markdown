@@ -7,7 +7,7 @@
     "css": "^2.2.1",
     "highlight.js": "^8.8.0",
     "markdown": "^0.5.0",
-    "parse-katex": "^0.2.1",
+    "parse-katex": "^0.3.0",
     "split-html": "^1.0.1",
     "underscore": "^1.8.3"
   },
