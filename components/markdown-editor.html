@@ -7,31 +7,31 @@
 
     <style>
       #preview {
+        color: #212121;
+        cursor: pointer;
+        font-family: "Open Sans";
+        font-size: {{fontSize}};
+        margin: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
         padding: 0 15px;
-        margin:0;
-        overflow-x:hidden;
-        overflow-y:auto;
-        font-family:"Open Sans";
-        font-size:{{fontSize}};
-        color:#212121;
-        cursor:pointer;
-        word-wrap:break-word;
+        word-wrap: break-word;
       }
       #markdown {
-        outline:none;
-        border:none;
-        border-right:solid 1px #e0e0e0;
-        resize:none;
-        overflow-y:auto;
-        overflow-x:hidden;
-        padding:15px;
-        font-family:{{monospaceFont | markdownFont}};
-        font-size:{{fontSize}};
-        color:#212121;
+        border-right: solid 1px #e0e0e0;
+        border: none;
+        color: #212121;
+        font-family: {{monospaceFont | markdownFont}};
+        font-size: {{fontSize}};
+        outline: none;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 15px;
+        resize: none;
       }
       #wrapper {
-        height:100%;
-        width:100%;
+        height: 100%;
+        width: 100%;
       }
     </style>
     <style id="customStyle"></style>

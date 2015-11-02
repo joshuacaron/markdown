@@ -112,6 +112,22 @@
         <span flex>Highlight syntax in code blocks</span>
         <paper-toggle-button checked="{{settings.highlightSyntax}}"></paper-toggle-button>
       </core-label>
+
+      <core-label for layout horizontal>
+        <span flex>Syntax highlighting theme</span>
+
+        <paper-dropdown-menu label="Syntax Highlighting Theme">
+          <paper-dropdown class="dropdown">
+            <core-menu class="menu" selected="0">
+              <template repeat="{{themes}}">
+                <paper-item>{{}}</paper-item>
+              </template>
+            </core-menu>
+          </paper-dropdown>
+        </paper-dropdown-menu>
+
+      </core-label>
+
       <core-label for layout horizontal>
         <span>Custom CSS<br>(use at your own risk)</span>
         <paper-input-decorator flex style="margin-left: 20px; margin-top: -1em;" label="Custom CSS">
@@ -145,6 +161,10 @@
           this.fire("autosave-update",{msg:"autosave updated"});
           this.settingsUpdated();
         },
+        themes: [
+          'GitHub',
+          'Monokai'
+        ],
 
         ready: function(){
 
